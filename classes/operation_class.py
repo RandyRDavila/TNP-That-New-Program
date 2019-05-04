@@ -4,7 +4,7 @@ class operations:
 
     def __repr__(self):
         if len(self.vals) > 1:
-            return f"{self.vals[0]} {self.vals[1]} {self.vals[2]}"
+            return f'{self.vals[0]} {self.vals[1]} {self.vals[2]}'
         else:
             return f"{self.vals[0]}"
 
