@@ -1,5 +1,6 @@
 from fractions import Fraction
 from functions.get_graph_data import get_graph_data
+from classes.conjecture_class import type_one_conjecture
 
 
 def make_ratio(hyp, target, invariant, bound):
@@ -7,11 +8,13 @@ def make_ratio(hyp, target, invariant, bound):
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
     ratios = []
     for G in graphs:
-        ratios.append(Fraction(G[target] / G[invariant]).limit_denominator(1000))
-    if bound == "upper":
-        return hyp, target, "<=", max(ratios), "*", invariant
+        ratios.append(Fraction(G[target] / G[invariant]).limit_denominator(100000))
+    if bound == "upper" and ratios != []:
+        return type_one_conjecture(hyp, target, "<=", max(ratios), "*", invariant)
+    elif bound == "lower" and ratios != []:
+        return type_one_conjecture(hyp, target, ">=", min(ratios), "*", invariant)
     else:
-        return hyp, target, ">=", min(ratios), "*", invariant
+        return None
 
 
 def make_constant(hyp, target, invariant, bound):
@@ -19,10 +22,12 @@ def make_constant(hyp, target, invariant, bound):
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
     constants = []
     for G in graphs:
-        if G[target] - G[invariant] != 0:
-            constants.append(G[target] - G[invariant])
-    if bound == "upper":
-        return hyp, target, invariant, "<=", invariant, "+", max(constants)
+        constants.append(G[target] - G[invariant])
+    if bound == "upper" and constants != []:
+        return type_one_conjecture(hyp, target, "<=", max(constants), "+", invariant)
+    elif bound == "lower" and constants != []:
+        return type_one_conjecture(hyp, target, ">=", min(constants), "+", invariant)
     else:
-        return hyp, target, invariant, ">=", invariant, "+", min(constants)
+        return None
+
 
