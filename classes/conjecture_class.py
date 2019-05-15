@@ -1,61 +1,85 @@
-
+import pickle
+from sympy import sympify
 from functions.get_graph_data import get_graph_data
 
 
-class type_one_conjecture:
-    def __init__(self, *args):
-        self.statement = args
+class Conjecture:
+
+    def __init__(self, hyp, target, inequality, expression):
+        self.hyp = hyp
+        self.target = target
+        self.inequality = inequality
+        self.expression = expression.split()
 
 
-    def __repr__(self):
-        s = f'If {self.statement[0]}, then '
-        s += f'{self.statement[1]}'
-        s += f' {self.statement[2]}'
-        s += f' {self.statement[3]}'
-        s += f' {self.statement[4]}'
-        s += f' {self.statement[5]}'
+    def get_expression(self):
+        s = ''
+        for string in self.expression:
+            s+= string
+            s+= ' '
         return s
 
 
-    def __call__(self, G):
-        if self.statement[0](G) == True:
-            if self.statement[2] == '<=':
-                if self.statement[4] == '+':
-                    return G[self.statement[1]] <= self.statement[3] + G[self.statement[5]]
-                elif self.statement[4] == '-':
-                    return G[self.statement[1]] <= self.statement[3] - G[self.statement[5]]
-                elif self.statement[4] == '*':
-                    return G[self.statement[1]] <= self.statement[3] * G[self.statement[5]]
-                else:
-                    return G[self.statement[1]] <= self.statement[3] / G[self.statement[5]]
-        else:
-            return True
+    def get_string(self):
+        return f'{self.target} {self.inequality} {sympify(self.get_expression())}'
 
 
-    def sharp_check(self, G):
-        if self.statement[0](G) == True:
-            if self.statement[4] == '+':
-                return G[self.statement[1]] == self.statement[3] + G[self.statement[5]]
-            elif self.statement[4] == '-':
-                return G[self.statement[1]] == self.statement[3] - G[self.statement[5]]
-            elif self.statement[4] == '*':
-                return G[self.statement[1]] == self.statement[3] * G[self.statement[5]]
+    def __repr__(self):
+        return f'If {self.hyp}, then {self.get_string()}'
+
+
+    def target_value(self, G):
+        return G[self.target]
+
+
+    def expression_value(self, G):
+        string = ''
+        for invariant in self.expression:
+            if invariant in G:
+                string += str(G[invariant])
+                string += ' '
             else:
-                return G[self.statement[1]] <= self.statement[3] / G[self.statement[5]]
-        else:
-            return False
+                string += invariant
+                string += ' '
+        string +=' +.0'
+        try: return eval(string)
+        except ZeroDivisionError: return 0
+
+
+    def conjecture_instance(self, G):
+        return eval(str(self.target_value(G))+self.inequality()+
+                    str(self.expression_value(G)))
+
+
+    def conjecture_sharp(self, G):
+        return self.target_value(G) == self.expression_value(G)
 
 
     def sharp_graphs(self):
         graphs = get_graph_data()
-        return [G for G in graphs 
-                if self.statement[0](graphs[G]) == True and self.sharp_check(graphs[G]) == True]
+        len([graphs[G] for G in graphs if self.hyp(graphs[G]) == True])
 
 
-    def scaled_touch_number(self):
+    def touch(self):
         graphs = get_graph_data()
-        graphs = [graphs[G] for G in graphs]
-        graphs = [G for G in graphs if self.statement[0](G) == True]
-        return len(self.sharp_graphs())/len(graphs) + len(graphs)
+        graphs = [graphs[G] for G in graphs if self.hyp(graphs[G]) == True]
+        return len([G for G in graphs if self.conjecture_sharp(G) == True])
 
-    
+
+    def scaled_touch(self):
+        graphs = get_graph_data()
+        graphs = [graphs[G] for G in graphs if self.hyp(graphs[G]) == True]
+        return self.touch()/len(graphs)
+
+
+    def __eq__(self, other):
+        if self.get_expression() == other.get_expression():
+            return True
+        else:
+            return False
+
+    def is_more_general(self, other):
+        if self.get_expression() == other.get_expression():
+            return set(other.hyp).issubset(set(self.hyp))
+        else:
+            return False
