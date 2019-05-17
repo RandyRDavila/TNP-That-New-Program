@@ -17,8 +17,8 @@ def make_conjectures_one(target):
                 conjs.append(make_constant(h, target, i, 'upper'))
                 conjs.append(make_constant(h, target, i, 'lower'))
 
-    C = Theo(conjs)
-    return C
+    #C = Theo(conjs)
+    return conjs
     
       
 def make_conjectures_two(target):
@@ -31,8 +31,8 @@ def make_conjectures_two(target):
                 conjs.append(make_ratio_two(h, target, c[0], c[1], 'upper'))
                 conjs.append(make_ratio_two(h, target, c[0], c[1], 'lower'))
 
-    C = Theo(conjs)
-    return C
+    #C = Theo(conjs)
+    return conjs
                         
 def make_conjectures_three(target):
     hyp = make_hypothesis(3)

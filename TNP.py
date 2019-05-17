@@ -6,6 +6,7 @@ import pygame
 #from functions.get_conjectures import get_conjectures, remove_duplicates
 import pickle
 from main import *
+from functions.Theo import Theo
 
 
 __version__ = '0.0.1'
@@ -32,17 +33,27 @@ def main():
 
     U = []
     L = []
-    for x in make_conjectures_one(invariant):
+
+    L1 = list(filter(None, make_conjectures_one(invariant))) 
+    L2 = list(filter(None, make_conjectures_two(invariant))) 
+    L3 = list(filter(None, make_conjectures_three(invariant)))
+    for x in L1:
         if x.inequality == ' <= ':
             U.append(x)
         else:
             L.append(x)
-    for x in make_conjectures_two(invariant):
+    for x in L2:
         if x.inequality == ' <= ':
             U.append(x)
         else:
             L.append(x)
-    
+
+    for x in L3:
+        if x.inequality == ' <= ':
+            U.append(x)
+        else:
+            L.append(x)
+    U, L = Theo(U), Theo(L)
 
     print('Upper Bounds')
     for i in range(1, 20):

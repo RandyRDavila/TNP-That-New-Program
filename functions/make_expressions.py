@@ -21,8 +21,7 @@ def make_ratio(hyp, target, invariant, bound):
             return Conjecture(hyp, target, " >= ", f'{invariant}')
         else:
             return Conjecture(hyp, target, " >= ", f'{min(ratios)} * {invariant}')
-    else:
-        return None
+    
 
 
 def make_constant(hyp, target, invariant, bound):
@@ -41,8 +40,7 @@ def make_constant(hyp, target, invariant, bound):
             return Conjecture(hyp, target, " >= ", f'{invariant}')
         else:
             return Conjecture(hyp, target, " >= ", f'{invariant} + {min(constants)}')
-    else:
-        return None 
+    
 
 
 
@@ -79,7 +77,7 @@ def make_ratio_two(hyp, target, invariant1, invariant2, bound):
         else:
             return Conjecture(hyp, target, " <= ", f'{max(ratios)} * ( {invariant1} + {invariant2} )')
     elif bound == "lower" and ratios != []:
-        if max(ratios) == 1:
+        if min(ratios) == 1:
             return Conjecture(hyp, target, " >= ", f'{invariant1} + {invariant2}')
         else:
             return Conjecture(hyp, target, " >= ", f'{min(ratios)} * ( {invariant1} + {invariant2} )')
@@ -100,7 +98,7 @@ def make_ratio_three(hyp, target, invariant1, invariant2, bound):
         else:
             return Conjecture(hyp, target, " <= ", f'{max(ratios)} * ( {invariant2} / {invariant1} )')
     elif bound == "lower" and ratios != []:
-        if max(ratios) == 1:
+        if min(ratios) == 1:
             return Conjecture(hyp, target, " >= ", f'{invariant2} / {invariant1}')
         else:
             return Conjecture(hyp, target, " >= ", f'{min(ratios)} * ( {invariant2} / {invariant1} )')
