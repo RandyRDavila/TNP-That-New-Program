@@ -3,6 +3,8 @@ from itertools import combinations
 from graph_data.functions.graph_property_names import *
 from functions.Theo import Theo
 from functions.make_hypothesis import *
+import pickle
+
 
 
 
@@ -16,9 +18,10 @@ def make_conjectures_one(target):
                 conjs.append(make_ratio(h, target, i, 'lower'))
                 conjs.append(make_constant(h, target, i, 'upper'))
                 conjs.append(make_constant(h, target, i, 'lower'))
+                
 
-    C = Theo(conjs)
-    return C
+    #C = Theo(conjs)
+    return conjs
     
       
 def make_conjectures_two(target):
@@ -31,8 +34,8 @@ def make_conjectures_two(target):
                 conjs.append(make_ratio_two(h, target, c[0], c[1], 'upper'))
                 conjs.append(make_ratio_two(h, target, c[0], c[1], 'lower'))
 
-    C = Theo(conjs)
-    return C
+    #C = Theo(conjs)
+    return conjs
                         
 def make_conjectures_three(target):
     hyp = make_hypothesis(3)
@@ -44,8 +47,8 @@ def make_conjectures_three(target):
                 conjs.append(make_ratio_three(h, target, c[0], c[1], 'upper'))
                 conjs.append(make_ratio_three(h, target, c[0], c[1], 'lower'))
 
-    C = Theo(conjs)
-    return C
+    #C = Theo(conjs)
+    return conjs
             
 
 def make_conjectures_four(target):
@@ -58,5 +61,23 @@ def make_conjectures_four(target):
                 conjs.append(make_constant_two(h, target, c[0], c[1], 'upper'))
                 conjs.append(make_constant_two(h, target, c[0], c[1], 'lower'))
 
-    C = Theo(conjs)
-    return C
+    #C = Theo(conjs)
+    return conjs
+
+
+def conjecture_db(target):
+    L = []
+    for x in make_conjectures_one(target):
+        L.append(x)
+    for x in make_conjectures_two(target):
+        L.append(x)
+    for x in make_conjectures_three(target):
+        L.append(x)
+    for x in make_conjectures_four(target):
+        L.append(x)
+
+    conj_dict = {'independence_number': Theo(L)}
+    pickle_out = open(f'graph_data/{target}__conjectures', 'wb')
+    pickle.dump(conj_dict, pickle_out)
+    pickle_out.close()
+    return None

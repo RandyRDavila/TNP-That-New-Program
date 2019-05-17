@@ -2,9 +2,9 @@ from classes.hypothesis_class import hypothesis as hyp
 from itertools import combinations
 from graph_data.functions.graph_property_names import *
 
-def make_hypothesis():
+def make_hypothesis(index):
     hypothesis = []
-    for i in range(1,4):
+    for i in range(1,index):
         for h in combinations(property_names, i):
             h = list(h)
             if i == 1:
