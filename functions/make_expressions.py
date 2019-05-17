@@ -12,9 +12,15 @@ def make_ratio(hyp, target, invariant, bound):
     for G in graphs:
         ratios.append(Fraction(G[target]/G[invariant]).limit_denominator(1000))
     if bound == "upper" and ratios != []:
-        return Conjecture(hyp, target, " <= ", f'{max(ratios)} * {invariant}')
+        if max(ratios) == 1:
+            return Conjecture(hyp, target, " <= ", f'{invariant}')
+        else:
+            return Conjecture(hyp, target, " <= ", f'{max(ratios)} * {invariant}')
     elif bound == "lower" and ratios != []:
-        return Conjecture(hyp, target, " >= ", f'{min(ratios)} * {invariant}')
+        if min(ratios) == 1:
+            return Conjecture(hyp, target, " >= ", f'{invariant}')
+        else:
+            return Conjecture(hyp, target, " >= ", f'{min(ratios)} * {invariant}')
     else:
         return None
 
@@ -24,12 +30,17 @@ def make_constant(hyp, target, invariant, bound):
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
     constants = []
     for G in graphs:
-        if G[target] - G[invariant] != 0:
-            constants.append(G[target] - G[invariant])
+        constants.append(G[target] - G[invariant])
     if bound == "upper" and constants != []:
-        return Conjecture(hyp, target, " <= ", f'{invariant} + {max(constants)}')
+        if max(constants) == 0:
+            return Conjecture(hyp, target, " <= ", f'{invariant}')
+        else:
+            return Conjecture(hyp, target, " <= ", f'{invariant} + {max(constants)}')
     elif bound == "lower" and constants != []:
-        return Conjecture(hyp, target, " >= ", f'{invariant} + {min(constants)}')
+        if min(constants) == 0:
+            return Conjecture(hyp, target, " >= ", f'{invariant}')
+        else:
+            return Conjecture(hyp, target, " >= ", f'{invariant} + {min(constants)}')
     else:
         return None 
 

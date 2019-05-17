@@ -21,7 +21,19 @@ def make_conjectures(target):
     return C
     
       
+def make_conjectures_two(target):
+    hyp = make_hypothesis()
+    conjs = []
+    for h in hyp:
+        for i in invariant_names:
+            if i != target:
+                for i2 in invariant_names:
+                    if i2 != i and i2 != target:
+                        conjs.append(make_ratios_two(h, target, i, i2, 'upper'))
+                        conjs.append(make_ratios_two(h, target, i, i2, 'lower'))
 
+    C = Theo(conjs)
+    return C
                         
 
             

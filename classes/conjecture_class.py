@@ -65,8 +65,7 @@ class Conjecture:
         return [G for G in graphs if self.hyp(graphs[G]) == True]
 
     def touch(self):
-        graphs = get_graph_data()
-        return len([G for G in graphs if self.conjecture_sharp(graphs[G]) == True])
+        return len(self.sharp_graphs())
 
 
     def scaled_touch(self):
