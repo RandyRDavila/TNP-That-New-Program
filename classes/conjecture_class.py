@@ -1,7 +1,7 @@
 import pickle
 from sympy import sympify
 from functions.get_graph_data import get_graph_data
-
+from fractions import Fraction
 
 class Conjecture:
 
@@ -22,10 +22,10 @@ class Conjecture:
 
     def get_string(self):
         return f'{self.target} {self.inequality} {sympify(self.get_expression())}'
-
+    
 
     def __repr__(self):
-        return f'If {self.hyp}, then {self.get_string()}'
+        return f'If {self.hyp}, then {self.target} {self.inequality} {self.get_expression()}'
 
 
     def target_value(self, G):
@@ -57,29 +57,28 @@ class Conjecture:
 
     def sharp_graphs(self):
         graphs = get_graph_data()
-        len([graphs[G] for G in graphs if self.hyp(graphs[G]) == True])
+        return [G for G in graphs 
+                if self.hyp(graphs[G]) == True and self.conjecture_sharp(graphs[G]) == True]
 
+    def hyp_graphs(self):
+        graphs = get_graph_data()
+        return [G for G in graphs if self.hyp(graphs[G]) == True]
 
     def touch(self):
         graphs = get_graph_data()
-        graphs = [graphs[G] for G in graphs if self.hyp(graphs[G]) == True]
-        return len([G for G in graphs if self.conjecture_sharp(G) == True])
+        return len([G for G in graphs if self.conjecture_sharp(graphs[G]) == True])
 
 
     def scaled_touch(self):
         graphs = get_graph_data()
-        graphs = [graphs[G] for G in graphs if self.hyp(graphs[G]) == True]
-        return self.touch()/len(graphs)
+        graphs = [G for G in graphs if self.hyp(graphs[G]) == True]
+        return Fraction(self.touch()/len(graphs)).limit_denominator(1000)
 
 
     def __eq__(self, other):
-        if self.get_expression() == other.get_expression():
-            return True
+        if self.hyp == other.hyp:
+            return self.get_expression() == other.get_expression()
         else:
             return False
 
-    def is_more_general(self, other):
-        if self.get_expression() == other.get_expression():
-            return set(other.hyp).issubset(set(self.hyp))
-        else:
-            return False
+

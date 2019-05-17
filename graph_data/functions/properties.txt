@@ -8,5 +8,5 @@ is_eulerian
 is_planar
 is_regular
 is_cubic
-G_not_K_n
+is_not_K_n
 is_triangle_free

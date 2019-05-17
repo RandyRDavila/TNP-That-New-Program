@@ -106,7 +106,7 @@ def graph_property_check(G, property):
         return GPY.min_degree(G) == GPY.max_degree(G)
     elif property == "is_cubic":
         return GPY.min_degree(G) == 3 and GPY.max_degree(G) == 3
-    elif property == 'G_not_K_n':
+    elif property == 'is_not_K_n':
         return nx.is_isomorphic(G, nx.complete_graph(nx.number_of_nodes(G))) == False
     elif property == 'is_triangle_free':
         return set(nx.triangles(G).values()) == {0}
