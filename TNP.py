@@ -69,12 +69,16 @@ def main():
             print(f'{x}. {graph_properties[x]}')
             print()
         parameter = graph_properties[int(input('Please specify the structural property you are interested in: '))]
-    print()
+        
+        conjectures = get_conjectures(invariant)
+        U = Theo([x for x in conjectures['upper'] if parameter in x.hyp.properties])
+        L = Theo([x for x in conjectures['lower'] if parameter in x.hyp.properties])
+        print()
 
-    conjectures = get_conjectures(invariant)
-    U = Theo([x for x in conjectures['upper'] if parameter in x.hyp.properties])
-    L = Theo([x for x in conjectures['lower'] if parameter in x.hyp.properties])
-
+    else:
+        conjectures = get_conjectures(invariant)
+        U = Theo([x for x in conjectures['upper']])
+        L = Theo([x for x in conjectures['lower']])
     print('Upper Bounds')
     for i in range(10):
         print(f'Conjecture {i}. {U[i]}')
