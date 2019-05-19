@@ -1,6 +1,3 @@
-from tnp.classes.class_functions import graph_property_check
-
-
 class hypothesis:
     def __init__(self, *args):
         self.properties = args

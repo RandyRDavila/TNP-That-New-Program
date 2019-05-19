@@ -5,8 +5,8 @@ if sys.version_info[:2] < (3, 4):
     raise ImportError(m % sys.version_info[:2])
 del sys
 
-import grinpy
-from grinpy import *
+import grinpy  # noqa
+from grinpy import *  # noqa
 
-import tnp.functions.make_graph_database
-from tnp.functions.make_graph_database import *
+import tnp.functions.make_graph_database  # noqa
+from tnp.functions.make_graph_database import *  # noqa

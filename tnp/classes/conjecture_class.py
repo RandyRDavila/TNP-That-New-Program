@@ -1,7 +1,8 @@
-import pickle
-from sympy import sympify
-from tnp.functions.get_graph_data import get_graph_data
 from fractions import Fraction
+
+from sympy import sympify
+
+from tnp.functions.get_graph_data import get_graph_data
 
 
 class Conjecture:
@@ -50,18 +51,18 @@ class Conjecture:
 
     def sharp_graphs(self):
         graphs = get_graph_data()
-        return [G for G in graphs if self.hyp(graphs[G]) == True and self.conjecture_sharp(graphs[G]) == True]
+        return [G for G in graphs if self.hyp(graphs[G]) is True and self.conjecture_sharp(graphs[G]) is True]
 
     def hyp_graphs(self):
         graphs = get_graph_data()
-        return [G for G in graphs if self.hyp(graphs[G]) == True]
+        return [G for G in graphs if self.hyp(graphs[G]) is True]
 
     def touch(self):
         return len(self.sharp_graphs())
 
     def scaled_touch(self):
         graphs = get_graph_data()
-        graphs = [G for G in graphs if self.hyp(graphs[G]) == True]
+        graphs = [G for G in graphs if self.hyp(graphs[G]) is True]
         return Fraction(self.touch() / len(graphs)).limit_denominator(1000)
 
     def __eq__(self, other):

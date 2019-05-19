@@ -1,11 +1,12 @@
 from fractions import Fraction
-from tnp.functions.get_graph_data import get_graph_data
+
 from tnp.classes.conjecture_class import Conjecture
+from tnp.functions.get_graph_data import get_graph_data
 
 
 def make_ratio(hyp, target, invariant, bound):
     graphs = get_graph_data()
-    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
+    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     ratios = []
     for G in graphs:
         ratios.append(Fraction(G[target] / G[invariant]).limit_denominator(1000))
@@ -23,7 +24,7 @@ def make_ratio(hyp, target, invariant, bound):
 
 def make_constant(hyp, target, invariant, bound):
     graphs = get_graph_data()
-    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
+    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     constants = []
     for G in graphs:
         constants.append(G[target] - G[invariant])
@@ -41,7 +42,7 @@ def make_constant(hyp, target, invariant, bound):
 
 def make_constant_two(hyp, target, invariant1, invariant2, bound):
     graphs = get_graph_data()
-    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
+    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     constants = []
     for G in graphs:
         constants.append(G[target] - (G[invariant1] / G[invariant2]))
@@ -61,7 +62,7 @@ def make_constant_two(hyp, target, invariant1, invariant2, bound):
 
 def make_ratio_two(hyp, target, invariant1, invariant2, bound):
     graphs = get_graph_data()
-    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
+    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     ratios = []
     for G in graphs:
         ratios.append(Fraction(G[target] / (G[invariant1] + G[invariant2])).limit_denominator(1000))
@@ -81,7 +82,7 @@ def make_ratio_two(hyp, target, invariant1, invariant2, bound):
 
 def make_ratio_three(hyp, target, invariant1, invariant2, bound):
     graphs = get_graph_data()
-    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) == True]
+    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     ratios = []
     for G in graphs:
         if G[invariant1] != G[invariant2]:

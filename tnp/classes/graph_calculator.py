@@ -1,5 +1,5 @@
-import networkx as nx
 import grinpy as GPY
+import networkx as nx
 
 
 def calc(G, invariant):

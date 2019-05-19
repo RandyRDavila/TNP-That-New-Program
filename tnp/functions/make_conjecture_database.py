@@ -1,10 +1,7 @@
-from tnp.functions.make_expressions import *
-from itertools import combinations
-from tnp.graph_data.functions.graph_property_names import *
-from tnp.functions.Theo import Theo
-from tnp.functions.make_hypothesis import *
 import pickle
-from main import *
+
+from tnp.functions.Theo import Theo
+from main import make_conjectures_one, make_conjectures_two, make_conjectures_three, make_conjectures_four
 
 
 def make_conjs(target):

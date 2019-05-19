@@ -1,8 +1,10 @@
-from tnp.graph_data.functions.graph_calculator import calc, graph_property_check
-from tnp.graph_data.functions.graph_property_names import invariant_names, property_names
-import grinpy as gp
 import os
 import pickle
+
+import grinpy as gp
+
+from tnp.graph_data.functions.graph_calculator import calc, graph_property_check
+from tnp.graph_data.functions.graph_property_names import invariant_names, property_names
 
 
 __all__ = ["make_graph_db"]
