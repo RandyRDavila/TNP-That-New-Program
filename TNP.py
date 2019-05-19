@@ -56,7 +56,7 @@ def main():
     print()
 
     try:
-        with open(f'graph_data/{invariant}_conjectures', 'rb') as file:
+        with open(f'tnp/graph_data/{invariant}_conjectures', 'rb') as file:
             read_data = file.read()
     except FileNotFoundError as fnf_error:
         print(fnf_error, '. Please make desired database.')
@@ -107,7 +107,7 @@ def main():
 
         work = input('Remove conjectures? (y/n) ')
 
-    f = open(f'graph_data/{invariant}_conjectures', 'wb')
+    f = open(f'tnp/graph_data/{invariant}_conjectures', 'wb')
     conj_dict = {'upper': U, 'lower': L}
     pickle.dump(conj_dict, f)
     f.close()
