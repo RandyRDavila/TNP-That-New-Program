@@ -14,8 +14,7 @@ from itertools import combinations
 import grinpy as gp
 
 
-
-__all__=['triameter']
+__all__ = ["triameter"]
 
 
 def triameter(G):
@@ -46,18 +45,9 @@ def triameter(G):
     d = []
     for s in combinations(G.nodes(), 3):
         s = list(s)
-        x1 = len(gp.shortest_path(G,source=s[0],target=s[1]))
-        x2 = len(gp.shortest_path(G,source=s[1],target=s[2]))
-        x3 = len(gp.shortest_path(G,source=s[0],target=s[2]))
-        d.append(x1+x2+x3)
-    
+        x1 = len(gp.shortest_path(G, source=s[0], target=s[1]))
+        x2 = len(gp.shortest_path(G, source=s[1], target=s[2]))
+        x3 = len(gp.shortest_path(G, source=s[0], target=s[2]))
+        d.append(x1 + x2 + x3)
+
     return max(d)
-
-
-
-
-
-
-
-
-

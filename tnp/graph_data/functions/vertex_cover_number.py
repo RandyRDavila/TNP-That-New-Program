@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2017 by
@@ -14,7 +13,8 @@
 from pulp import LpBinary, LpMinimize, LpProblem, LpVariable, lpSum
 
 
-__all__ = ['vertex_cover_number']
+__all__ = ["vertex_cover_number"]
+
 
 def min_vertex_cover_ilp(G):
     """Return a smallest vertex cover in the graph G.
@@ -36,11 +36,8 @@ def min_vertex_cover_ilp(G):
     set
         A set of nodes in a smallest vertex cover.
     """
-    prob = LpProblem('min_vertex_cover', LpMinimize)
-    variables = {
-        node: LpVariable('x{}'.format(i+1), 0, 1, LpBinary)
-        for i, node in enumerate(G.nodes())
-    }
+    prob = LpProblem("min_vertex_cover", LpMinimize)
+    variables = {node: LpVariable("x{}".format(i + 1), 0, 1, LpBinary) for i, node in enumerate(G.nodes())}
 
     # Set the total domination number objective function
     prob += lpSum([variables[n] for n in variables])
@@ -54,7 +51,7 @@ def min_vertex_cover_ilp(G):
     return solution_set
 
 
-def min_vertex_cover(G, method='ilp'):
+def min_vertex_cover(G, method="ilp"):
     """Return a smallest vertex cover of G.
     A *vertex cover* of a graph *G* is a set of vertices with the
     property that every edge in the graph is incident to at least one
@@ -71,9 +68,7 @@ def min_vertex_cover(G, method='ilp'):
     set
         A set of nodes in a smallest vertex cover.
     """
-    vertex_cover_func = {
-        'ilp': min_vertex_cover_ilp,
-    }.get(method, None)
+    vertex_cover_func = {"ilp": min_vertex_cover_ilp}.get(method, None)
 
     if vertex_cover_func:
         return vertex_cover_func(G)

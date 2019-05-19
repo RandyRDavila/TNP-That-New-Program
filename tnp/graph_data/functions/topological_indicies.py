@@ -15,16 +15,17 @@
 import math
 from grinpy import neighborhood
 
-__all__ = ['randic_index',
-           'augmented_randic_index',
-           'harmonic_index',
-           'atom_bond_connectivity_index',
-           'sum_connectivity_index'
-           ]
+__all__ = [
+    "randic_index",
+    "augmented_randic_index",
+    "harmonic_index",
+    "atom_bond_connectivity_index",
+    "sum_connectivity_index",
+]
 
 
-def degree(G,x):
-    return len(neighborhood(G,x))
+def degree(G, x):
+    return len(neighborhood(G, x))
 
 
 def randic_index(G):
@@ -53,9 +54,9 @@ def randic_index(G):
     (2013) 351–361.
     http://dx.doi.org/10.5562/cca2294
     """
-    f = lambda x, y: 1/ math.sqrt(degree(G,x)*degree(G,y))
-    
-    return sum([f(e[0],e[1]) for e in list(G.edges())])
+    f = lambda x, y: 1 / math.sqrt(degree(G, x) * degree(G, y))
+
+    return sum([f(e[0], e[1]) for e in list(G.edges())])
 
 
 def augmented_randic_index(G):
@@ -84,9 +85,9 @@ def augmented_randic_index(G):
     (2013) 351–361.
     http://dx.doi.org/10.5562/cca2294
     """
-    f = lambda x, y: max(degree(G,x),degree(G,y))
-    
-    return sum([1 / f(e[0],e[1]) for e in list(G.edges())])
+    f = lambda x, y: max(degree(G, x), degree(G, y))
+
+    return sum([1 / f(e[0], e[1]) for e in list(G.edges())])
 
 
 def harmonic_index(G):
@@ -116,10 +117,10 @@ def harmonic_index(G):
     (2013) 351–361.
     http://dx.doi.org/10.5562/cca2294
     """
-    f = lambda x, y: degree(G,x) + degree(G,y)
-    
-    return sum([2/f(e[0], e[1]) for e in list(G.edges())])
-   
+    f = lambda x, y: degree(G, x) + degree(G, y)
+
+    return sum([2 / f(e[0], e[1]) for e in list(G.edges())])
+
 
 def atom_bond_connectivity_index(G):
     """Returns the atom bond connectivity Index of the graph G.
@@ -147,9 +148,10 @@ def atom_bond_connectivity_index(G):
     (2013) 351–361.
     http://dx.doi.org/10.5562/cca2294
     """
-    f = lambda x,y: math.sqrt((degree(G,x) + degree(G,y) - 2)/ (degree(G,x)*degree(G,y)))
-    
-    return sum([f(e[0],e[1]) for e in list(G.edges())])
+    f = lambda x, y: math.sqrt((degree(G, x) + degree(G, y) - 2) / (degree(G, x) * degree(G, y)))
+
+    return sum([f(e[0], e[1]) for e in list(G.edges())])
+
 
 def sum_connectivity_index(G):
     """Returns the sum connectivity Index of the graph G.
@@ -177,12 +179,6 @@ def sum_connectivity_index(G):
     (2013) 351–361.
     http://dx.doi.org/10.5562/cca2294
     """
-    f = lambda x,y: 1/math.sqrt((degree(G,x) + degree(G,y)))
-    
-    return sum([f(e[0],e[1]) for e in list(G.edges())])
+    f = lambda x, y: 1 / math.sqrt((degree(G, x) + degree(G, y)))
 
-
-    
-    
-    
-
+    return sum([f(e[0], e[1]) for e in list(G.edges())])

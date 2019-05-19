@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 
 #    Copyright (C) 2017 by
@@ -10,7 +9,7 @@
 """
 import pickle
 
-__all__ = ['get_graph_data']
+__all__ = ["get_graph_data"]
 
 
 def get_graph_data():
@@ -28,6 +27,6 @@ def get_graph_data():
            The dictionary with key values equal to conjectured inequalities
            and whose values are associated with a given conjecture.
     """
-    with open(f'tnp/graph_data/small_simple_graphs_db', 'rb') as pickle_file:
+    with open(f"tnp/graph_data/small_simple_graphs_db", "rb") as pickle_file:
         db = pickle.load(pickle_file)
     return db

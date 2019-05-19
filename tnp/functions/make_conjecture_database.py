@@ -16,24 +16,24 @@ def make_conjs(target):
     L3 = list(filter(None, make_conjectures_three(target)))
     L4 = list(filter(None, make_conjectures_four(target)))
     for x in L1:
-        if x.inequality == ' <= ':
+        if x.inequality == " <= ":
             U.append(x)
         else:
             L.append(x)
     for x in L2:
-        if x.inequality == ' <= ':
+        if x.inequality == " <= ":
             U.append(x)
         else:
             L.append(x)
 
     for x in L3:
-        if x.inequality == ' <= ':
+        if x.inequality == " <= ":
             U.append(x)
         else:
             L.append(x)
 
     for x in L4:
-        if x.inequality == ' <= ':
+        if x.inequality == " <= ":
             U.append(x)
         else:
             L.append(x)
@@ -43,8 +43,8 @@ def make_conjs(target):
 
 def conjecture_db(target):
     U, L = make_conjs(target)
-    conj_dict = {'upper': U, 'lower': L}
-    pickle_out = open(f'tnp/graph_data/{target}_conjectures', 'wb')
+    conj_dict = {"upper": U, "lower": L}
+    pickle_out = open(f"tnp/graph_data/{target}_conjectures", "wb")
     pickle.dump(conj_dict, pickle_out)
     pickle_out.close()
     return None
