@@ -124,3 +124,6 @@ dmypy.json
 
 # VS Code settings
 .vscode/
+
+# macOS Desktop Services
+.DS_Store
