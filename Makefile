@@ -6,3 +6,12 @@ install-dev:
 
 install-all:
 	pip install -r requirements.txt -r requirements_dev.txt
+
+lint:
+	flake8 tnp/
+
+check-formatting:
+	black --check tnp/
+
+format:
+	black tnp/
