@@ -6,7 +6,7 @@ import pygame
 #from functions.get_conjectures import get_conjectures, remove_duplicates
 import pickle
 from main import *
-from functions.Theo import Theo
+from tnp.functions.Theo import Theo
 
 
 __version__ = '0.0.1'
@@ -34,8 +34,8 @@ def main():
     U = []
     L = []
 
-    L1 = list(filter(None, make_conjectures_one(invariant))) 
-    L2 = list(filter(None, make_conjectures_two(invariant))) 
+    L1 = list(filter(None, make_conjectures_one(invariant)))
+    L2 = list(filter(None, make_conjectures_two(invariant)))
     L3 = list(filter(None, make_conjectures_three(invariant)))
     for x in L1:
         if x.inequality == ' <= ':
@@ -85,7 +85,7 @@ def main():
             print('')
         print()
 
-    
+
     return 0
 
 

@@ -1,10 +1,10 @@
-from classes.class_functions import graph_property_check
+from tnp.classes.class_functions import graph_property_check
 
 
 class hypothesis:
     def __init__(self, *args):
         self.properties = args
-  
+
     def __repr__(self):
         s = f'G {self.properties[0]}'
         if len(self.properties) == 1:

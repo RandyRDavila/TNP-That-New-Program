@@ -8,6 +8,5 @@ del sys
 import grinpy
 from grinpy import *
 
-import functions.make_graph_database
-from functions.make_graph_database import *
-
+import tnp.functions.make_graph_database
+from tnp.functions.make_graph_database import *

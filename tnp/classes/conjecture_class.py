@@ -1,6 +1,6 @@
 import pickle
 from sympy import sympify
-from functions.get_graph_data import get_graph_data
+from tnp.functions.get_graph_data import get_graph_data
 from fractions import Fraction
 
 class Conjecture:
@@ -22,7 +22,7 @@ class Conjecture:
 
     def get_string(self):
         return f'{self.target} {self.inequality} {sympify(self.get_expression())}'
-    
+
 
     def __repr__(self):
         return f'If {self.hyp}, then {self.target} {self.inequality} {self.get_expression()}'
@@ -57,7 +57,7 @@ class Conjecture:
 
     def sharp_graphs(self):
         graphs = get_graph_data()
-        return [G for G in graphs 
+        return [G for G in graphs
                 if self.hyp(graphs[G]) == True and self.conjecture_sharp(graphs[G]) == True]
 
     def hyp_graphs(self):
@@ -79,5 +79,3 @@ class Conjecture:
             return self.get_expression() == other.get_expression()
         else:
             return False
-
-

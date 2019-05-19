@@ -28,6 +28,6 @@ def get_graph_data():
            The dictionary with key values equal to conjectured inequalities
            and whose values are associated with a given conjecture.
     """
-    with open(f'graph_data/small_simple_graphs_db', 'rb') as pickle_file:
+    with open(f'tnp/graph_data/small_simple_graphs_db', 'rb') as pickle_file:
         db = pickle.load(pickle_file)
     return db

@@ -1,6 +1,6 @@
 from fractions import Fraction
-from functions.get_graph_data import get_graph_data
-from classes.conjecture_class import Conjecture
+from tnp.functions.get_graph_data import get_graph_data
+from tnp.classes.conjecture_class import Conjecture
 
 
 
@@ -21,7 +21,7 @@ def make_ratio(hyp, target, invariant, bound):
             return Conjecture(hyp, target, " >= ", f'{invariant}')
         else:
             return Conjecture(hyp, target, " >= ", f'{min(ratios)} * {invariant}')
-    
+
 
 
 def make_constant(hyp, target, invariant, bound):
@@ -40,7 +40,7 @@ def make_constant(hyp, target, invariant, bound):
             return Conjecture(hyp, target, " >= ", f'{invariant}')
         else:
             return Conjecture(hyp, target, " >= ", f'{invariant} + {min(constants)}')
-    
+
 
 
 
@@ -61,7 +61,7 @@ def make_constant_two(hyp, target, invariant1, invariant2, bound):
         else:
             return Conjecture(hyp, target, " >= ", f'( {invariant1} / {invariant2} ) + {min(constants)}')
     else:
-        return None 
+        return None
 
 
 
@@ -104,5 +104,3 @@ def make_ratio_three(hyp, target, invariant1, invariant2, bound):
             return Conjecture(hyp, target, " >= ", f'{min(ratios)} * ( {invariant2} / {invariant1} )')
     else:
         return None
-
-

@@ -1,6 +1,6 @@
-from classes.hypothesis_class import hypothesis as hyp
+from tnp.classes.hypothesis_class import hypothesis as hyp
 from itertools import combinations
-from graph_data.functions.graph_property_names import *
+from tnp.graph_data.functions.graph_property_names import *
 
 def make_hypothesis(index):
     hypothesis = []
@@ -14,7 +14,3 @@ def make_hypothesis(index):
             else:
                 hypothesis.append(hyp(h[0], h[1], h[2]))
     return hypothesis
-
-
-
-

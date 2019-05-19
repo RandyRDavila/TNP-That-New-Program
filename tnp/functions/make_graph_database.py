@@ -1,5 +1,5 @@
-from graph_data.functions.graph_calculator import calc, graph_property_check
-from graph_data.functions.graph_property_names import invariant_names, property_names
+from tnp.graph_data.functions.graph_calculator import calc, graph_property_check
+from tnp.graph_data.functions.graph_property_names import invariant_names, property_names
 import grinpy as gp
 import os
 import pickle
@@ -15,16 +15,16 @@ def make_graph_db():
 
     pickle_dict = dict()
     for graph in graphs:
-        
+
         pickle_dict[graph] =  dict()
-        
+
         G = gp.read_edgelist('graph_data/small_connected/'+graph)
 
         for name in invariant_names:
             pickle_dict[graph][name] = calc(G, name)
         for name in property_names:
             pickle_dict[graph][name] = graph_property_check(G, name)
-      
+
 
     pickle_out = open('graph_data/small_simple_graphs_db', 'wb')
     pickle.dump(pickle_dict, pickle_out)
