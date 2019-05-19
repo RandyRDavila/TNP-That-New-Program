@@ -6,8 +6,8 @@ import pygame
 #from functions.get_conjectures import get_conjectures, remove_duplicates
 import pickle
 from main import *
-from functions.Theo import Theo
-from functions.get_conjectures import *
+from tnp.functions.Theo import Theo
+from tnp.functions.get_conjectures import *
 
 
 __version__ = '0.0.1'
@@ -56,7 +56,7 @@ def main():
     print()
 
     try:
-        with open(f'graph_data/{invariant}_conjectures', 'rb') as file:
+        with open(f'tnp/graph_data/{invariant}_conjectures', 'rb') as file:
             read_data = file.read()
     except FileNotFoundError as fnf_error:
         print(fnf_error, '. Please make desired database.')
@@ -111,7 +111,7 @@ def main():
 
         work = input('Remove conjectures? (y/n) ')
 
-    f = open(f'graph_data/{invariant}_conjectures', 'wb')
+    f = open(f'tnp/graph_data/{invariant}_conjectures', 'wb')
     conj_dict = {'upper': U, 'lower': L}
     pickle.dump(conj_dict, f)
     f.close()

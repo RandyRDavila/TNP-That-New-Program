@@ -1,8 +1,8 @@
-from functions.make_expressions import *
+from tnp.functions.make_expressions import *
 from itertools import combinations
-from graph_data.functions.graph_property_names import *
-from functions.Theo import Theo
-from functions.make_hypothesis import *
+from tnp.graph_data.functions.graph_property_names import *
+from tnp.functions.Theo import Theo
+from tnp.functions.make_hypothesis import *
 
 
 
@@ -19,8 +19,8 @@ def make_conjectures_one(target):
 
     #C = Theo(conjs)
     return conjs
-    
-      
+
+
 def make_conjectures_two(target):
     hyp = make_hypothesis(3)
     conjs = []
@@ -33,7 +33,7 @@ def make_conjectures_two(target):
 
     #C = Theo(conjs)
     return conjs
-                        
+
 def make_conjectures_three(target):
     hyp = make_hypothesis(3)
     conjs = []
@@ -46,7 +46,7 @@ def make_conjectures_three(target):
 
     C = Theo(conjs)
     return C
-            
+
 
 def make_conjectures_four(target):
     hyp = make_hypothesis(3)
