@@ -7,4 +7,4 @@ class TestConjecture:
         assert conjecture.hyp == "hypothesis"
         assert conjecture.target == "target"
         assert conjecture.inequality == "inequality"
-        assert conjecture.expression == "expression"
+        assert conjecture.expression == ["expression"]
