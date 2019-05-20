@@ -15,3 +15,6 @@ check-formatting:
 
 format:
 	black tnp/
+
+test:
+	pytest --cov tnp/
