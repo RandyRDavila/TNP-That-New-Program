@@ -1,3 +1,4 @@
+import itertools
 import pickle
 
 from tnp.functions.Theo import Theo
@@ -5,37 +6,15 @@ from main import make_conjectures_one, make_conjectures_two, make_conjectures_th
 
 
 def make_conjs(target):
-    U = []
-    L = []
+    L1 = (c for c in make_conjectures_one(target) if c)
+    L2 = (c for c in make_conjectures_two(target) if c)
+    L3 = (c for c in make_conjectures_three(target) if c)
+    L4 = (c for c in make_conjectures_four(target) if c)
 
-    L1 = list(filter(None, make_conjectures_one(target)))
-    L2 = list(filter(None, make_conjectures_two(target)))
-    L3 = list(filter(None, make_conjectures_three(target)))
-    L4 = list(filter(None, make_conjectures_four(target)))
-    for x in L1:
-        if x.inequality == " <= ":
-            U.append(x)
-        else:
-            L.append(x)
-    for x in L2:
-        if x.inequality == " <= ":
-            U.append(x)
-        else:
-            L.append(x)
+    upper_bounds = (c for c in itertools.chain(L1, L2, L3, L4) if c.inequality == " <= ")
+    lower_bounds = (c for c in itertools.chain(L1, L2, L3, L4) if c.inequality == " >= ")
 
-    for x in L3:
-        if x.inequality == " <= ":
-            U.append(x)
-        else:
-            L.append(x)
-
-    for x in L4:
-        if x.inequality == " <= ":
-            U.append(x)
-        else:
-            L.append(x)
-
-    return Theo(U), Theo(L)
+    return Theo(upper_bounds), Theo(lower_bounds)
 
 
 def conjecture_db(target):

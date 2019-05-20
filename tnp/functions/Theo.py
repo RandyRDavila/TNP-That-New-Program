@@ -1,14 +1,10 @@
 def Theo(conjs):
-    conjs = list(filter(None, conjs))
-    expressions = list(set([c.get_expression() for c in conjs]))
-    C = []
+    conjs = tuple(c for c in conjs if c)
+    expressions = set((c.get_expression() for c in conjs))
+    theo_conjectures = []
     for expression in expressions:
-        exp_temp = []
-        for c in conjs:
-            if c.get_expression() == expression:
-                exp_temp.append(c)
-        exp_temp.sort(reverse=True, key=lambda x: len(x.hyp_graphs()))
-        C.append(exp_temp[0])
+        conjectures_for_expression = (c for c in conjs if c.get_expression() == expression)
+        exp_temp = sorted(conjectures_for_expression, key=lambda x: len(x.hyp_graphs()), reverse=True)
+        theo_conjectures.append(exp_temp[0])
 
-    C.sort(reverse=True, key=lambda x: x.touch())
-    return C
+    return sorted(theo_conjectures, key=lambda x: x.touch(), reverse=True)

@@ -127,3 +127,5 @@ dmypy.json
 
 # macOS Desktop Services
 .DS_Store
+
+times.py
