@@ -6,13 +6,13 @@ from main import make_conjectures_one, make_conjectures_two, make_conjectures_th
 
 
 def make_conjs(target):
-    L1 = (c for c in make_conjectures_one(target) if c)
-    L2 = (c for c in make_conjectures_two(target) if c)
-    L3 = (c for c in make_conjectures_three(target) if c)
-    L4 = (c for c in make_conjectures_four(target) if c)
+    L11, L12 = itertools.tee((c for c in make_conjectures_one(target) if c), 2)
+    L21, L22 = itertools.tee((c for c in make_conjectures_two(target) if c), 2)
+    L31, L32 = itertools.tee((c for c in make_conjectures_three(target) if c), 2)
+    L41, L42 = itertools.tee((c for c in make_conjectures_four(target) if c), 2)
 
-    upper_bounds = (c for c in itertools.chain(L1, L2, L3, L4) if c.inequality == " <= ")
-    lower_bounds = (c for c in itertools.chain(L1, L2, L3, L4) if c.inequality == " >= ")
+    upper_bounds = (c for c in itertools.chain(L11, L21, L31, L41) if c.inequality == " <= ")
+    lower_bounds = (c for c in itertools.chain(L12, L22, L32, L42) if c.inequality == " >= ")
 
     return Theo(upper_bounds), Theo(lower_bounds)
 
