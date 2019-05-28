@@ -1,7 +1,5 @@
 from fractions import Fraction
 
-from sympy import sympify
-
 from tnp.functions.get_graph_data import get_graph_data
 
 
@@ -13,22 +11,26 @@ class Conjecture:
         self.expression = expression.split()
 
     def get_expression(self):
-        s = ""
-        for string in self.expression:
-            s += string
-            s += " "
-        return s
+        return " ".join(self.expression)
 
-    def get_string(self):
-        return f"{self.target} {self.inequality} {sympify(self.get_expression())}"
-
-    def __repr__(self):
+    def __str__(self):
         return f"If {self.hyp}, then {self.target} {self.inequality} {self.get_expression()}"
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}(hypothesis={self.hyp!r}, target={self.target!r}, inequality={self.inequality!r}, expression={self.get_expression()!r})"
+
     def target_value(self, G):
+        # For now, we'll assume G is a dict or some object that implements __getitem__
+        # In the future, though, it would be best to let G be a graph object so that
+        # this is returning something like self.target(G), or looking up the value
+        # from a database
         return G[self.target]
 
     def expression_value(self, G):
+        # For now, we'll assume G is a dict or some object that implements __getitem__
+        # In the future, though, it would best to let G be a graph object so
+        # that G[invariant] becomes something like invariant(G), or looks up the
+        # value from a database
         string = ""
         for invariant in self.expression:
             if invariant in G:
