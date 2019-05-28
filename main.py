@@ -6,8 +6,9 @@ from tnp.functions.make_hypothesis import *
 
 
 
-def make_conjectures_one(target):
-    hyp = make_hypothesis(4)
+
+def make_conjectures_one(target, regular_exception = False):
+    hyp = make_hypothesis(4, regular_exception)
     conjs = []
     for h in hyp:
         for i in invariant_names:
@@ -21,8 +22,8 @@ def make_conjectures_one(target):
     return conjs
 
 
-def make_conjectures_two(target):
-    hyp = make_hypothesis(3)
+def make_conjectures_two(target, regular_exception = False):
+    hyp = make_hypothesis(3, regular_exception)
     conjs = []
     for h in hyp:
         for c in combinations(invariant_names,2):
@@ -34,8 +35,8 @@ def make_conjectures_two(target):
     #C = Theo(conjs)
     return conjs
 
-def make_conjectures_three(target):
-    hyp = make_hypothesis(3)
+def make_conjectures_three(target, regular_exception = False):
+    hyp = make_hypothesis(3, regular_exception)
     conjs = []
     for h in hyp:
         for c in combinations(invariant_names,2):
@@ -48,8 +49,8 @@ def make_conjectures_three(target):
     return C
 
 
-def make_conjectures_four(target):
-    hyp = make_hypothesis(3)
+def make_conjectures_four(target,regular_exception = False):
+    hyp = make_hypothesis(3, regular_exception)
     conjs = []
     for h in hyp:
         for c in combinations(invariant_names,2):

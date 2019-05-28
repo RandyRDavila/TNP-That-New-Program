@@ -17,7 +17,9 @@ valid_invariants = {1:'domination_number',
                     3:'connected_domination_number',
                     4:'independence_number',
                     5:'power_domination_number',
-                    6:'zero_forcing_number'}#,
+                    6:'zero_forcing_number',
+                    7:'matching_number', 
+                    8:'harmonic_index'}#,
                     #7:'total_zero_forcing_number',
                     #8:'connected_zero_forcing_number',
                     #9:'independent_domination_number',
@@ -43,14 +45,14 @@ def main():
     print()
 
     print('The invariants you may conjecture against are: ')
-    print('----------------------------------------')
+    print('-----------------------------------------------')
     print()
     i = 1
     for x in valid_invariants:
         print(f'{i}. {valid_invariants[x]}')
         i+=1
         print()
-    print('----------------------------------------')
+    print('-----------------------------------------------')
     print()
     invariant = valid_invariants[int(input('Invariant: '))]
     print()

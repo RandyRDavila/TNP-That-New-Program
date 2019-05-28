@@ -1,0 +1,9 @@
+is_bipartite
+is_chordal
+has_bridges
+is_connected
+is_distance_regular
+is_eulerian
+is_planar
+is_not_K_n
+is_triangle_free
