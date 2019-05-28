@@ -17,4 +17,4 @@ format:
 	black tnp/
 
 test:
-	pytest --cov tnp/
+	pytest -vv --cov tnp/
