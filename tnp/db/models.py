@@ -13,7 +13,7 @@ Graph = type(
     {
         "__tablename__": "graphs",
         "id": Column(Integer, primary_key=True),
-        "node_link_data": Column(String),
+        "json": Column(String),
         **{invariant: Column(Numeric) for invariant in invariants.names},
         **{prop: Column(Boolean) for prop in properties.names},
     },
