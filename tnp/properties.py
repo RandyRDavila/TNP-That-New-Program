@@ -24,6 +24,8 @@ class _properties(_NamespaceIterator):
         is_cubic = Property(function=gp.is_cubic)
         is_not_K_n = Property(function=lambda G: not gp.is_complete_graph(G), name="is_not_K_n")
         is_triangle_free = Property(function=gp.is_triangle_free)
+        is_claw_free = Property(function=gp.is_claw_free)
+        # TODO: Add 2-connected
 
 
 properties = _properties()
