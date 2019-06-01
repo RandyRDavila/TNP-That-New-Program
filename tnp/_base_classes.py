@@ -1,5 +1,5 @@
-from typing import Callable
 from collections import abc
+from typing import Callable
 
 
 class _GraphCallable:
@@ -13,25 +13,28 @@ class _GraphCallable:
         self.function = function
         self._name = name
 
-    def __repr__(self):
+    def __repr__(self) -> None:
         return f"{self.__class__.__name__}(function={self.function!r}, name={self._name!r})"
 
-    def __str__(self):
+    def __str__(self) -> None:
         return self.name
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> None:
         return (self.function == other.function) and (self.name == other.name)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> None:
         return self.function(*args, **kwargs)
 
     @property
-    def name(self):
+    def name(self) -> None:
         return self.function.__name__ if self._name is None else self._name
 
 
 class _NamespaceIterator:
-    def __getattr__(self, attribute):
+    def __init__(self) -> None:
+        self._names = tuple(key for key, value in self.namespace.__dict__.items() if isinstance(value, self.type))
+
+    def __getattr__(self, attribute: str):
         try:
             return getattr(self.namespace, attribute)
         except AttributeError as exc:
@@ -52,4 +55,4 @@ class _NamespaceIterator:
 
     @property
     def names(self):
-        return (key for key, value in self.namespace.__dict__.items() if isinstance(value, self.type))
+        return self._names
