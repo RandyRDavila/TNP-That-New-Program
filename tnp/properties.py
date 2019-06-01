@@ -25,6 +25,7 @@ class _properties(_NamespaceIterator):
         is_not_K_n = Property(function=lambda G: not gp.is_complete_graph(G), name="is_not_K_n")
         is_triangle_free = Property(function=gp.is_triangle_free)
         is_claw_free = Property(function=gp.is_claw_free)
+        is_complete = Property(function=gp.is_complete_graph, name="is_complete")
         # TODO: Add 2-connected
 
 
