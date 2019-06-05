@@ -54,19 +54,6 @@ class _graphs:
         self._db_session = db_session
         self._query = db_session.query(Graph)
 
-    def _build_from_json(self, json_):
-        graphs = (_graph_from_json(data) for data in json.loads(json_))
-        with multiprocessing.Pool() as pool:
-            for graph, calculations in pool.imap(_calculate, graphs):
-                data = gp.node_link_data(graph)
-                db_graph = Graph(json=data, **calculations)
-                self._db_session.add(db_graph)
-        self._db_session.commit()
-
-    def _build_from_file(self, path):
-        json_ = pathlib.Path(path).read_text()
-        self._build_from_json(json_)
-
     def __call__(self, **kwargs):
         if not kwargs:
             return [_graph_from_json(graph.json) for graph in self._query.all()]
@@ -82,7 +69,20 @@ class _graphs:
     def complete(self):
         return [_graph_from_json(graph.json) for graph in self._query.filter(Graph.is_complete is True)]
 
-    def make_table(self, json_=None, from_file=None):
+    def _build_from_json(self, json_):
+        graphs = (_graph_from_json(data) for data in json.loads(json_))
+        with multiprocessing.Pool() as pool:
+            for graph, calculations in pool.imap(_calculate, graphs):
+                data = gp.node_link_data(graph)
+                db_graph = Graph(json=data, **calculations)
+                self._db_session.add(db_graph)
+        self._db_session.commit()
+
+    def _build_from_file(self, path):
+        json_ = pathlib.Path(path).read_text()
+        self._build_from_json(json_)
+
+    def _create_table(self, json_=None, from_file=None):
         """Build the graphs table from scratch.
 
             If the graphs table already exists, it will be dropped before building.
