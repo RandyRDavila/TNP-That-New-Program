@@ -80,7 +80,7 @@ class _graphs:
         return [_graph_from_json(graph.json) for graph in self._query.all()]
 
     def complete(self):
-        return [_graph_from_json(graph.json) for graph in self._query.filter(Graph.is_complete == True)]
+        return [_graph_from_json(graph.json) for graph in self._query.filter(Graph.is_complete is True)]
 
     def make_table(self, json_=None, from_file=None):
         """Build the graphs table from scratch.
