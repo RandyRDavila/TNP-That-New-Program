@@ -4,8 +4,6 @@ import math
 import operator
 import re
 
-from typing import Callable
-
 from tnp.exceptions import FunctionNotAllowedError, NameNotAllowedError, OperatorNotAllowedError
 from tnp.invariants import invariants
 
@@ -153,13 +151,13 @@ class Expression:
     def __str__(self):
         return self._string
 
-    def _prepare(self, graph):
-        return re.sub(
+    def evaluate(self, graph):
+        prepared_expression = re.sub(
             pattern=rf"\b({'|'.join(f.name for f in invariants)})\b",
             repl=functools.partial(self._calculate_matched_invariant, graph),
             string=self._string,
         )
-
-    def evaluate(self, graph):
-        prepared_expression = self._prepare(graph)
         return self._evaluator.evaluate(prepared_expression)
+
+    def __call__(self, graph):
+        return self.evaluate(graph)
