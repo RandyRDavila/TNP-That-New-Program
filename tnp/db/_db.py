@@ -1,20 +1,12 @@
 import itertools
 import json
-import multiprocessing
-import pathlib
 import operator
 
 import grinpy as gp
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from tnp.invariants import invariants
-from tnp.properties import properties
 from tnp.db.models import Base, Graph
-
-
-def _calculate(graph):
-    return graph, {func.name: func(graph) for func in itertools.chain(invariants, properties)}
 
 
 def _graph_from_json(json_):
@@ -68,35 +60,6 @@ class _graphs:
 
     def complete(self):
         return [_graph_from_json(graph.json) for graph in self._query.filter(Graph.is_complete is True)]
-
-    def _build_from_json(self, json_):
-        graphs = (_graph_from_json(data) for data in json.loads(json_))
-        with multiprocessing.Pool() as pool:
-            for graph, calculations in pool.imap(_calculate, graphs):
-                data = gp.node_link_data(graph)
-                db_graph = Graph(json=data, **calculations)
-                self._db_session.add(db_graph)
-        self._db_session.commit()
-
-    def _build_from_file(self, path):
-        json_ = pathlib.Path(path).read_text()
-        self._build_from_json(json_)
-
-    def _create_table(self, json_=None, from_file=None):
-        """Build the graphs table from scratch.
-
-            If the graphs table already exists, it will be dropped before building.
-            """
-        # TODO: Add support for reading from_file from a config file
-        # Should also support path-like object, not just string
-        if json_ is not None and from_file is not None:
-            raise ValueError("Can not provide both `json` and `from_file`")
-        elif json_ is not None:
-            self._build_from_json(json_)
-        elif from_file is not None:
-            self._build_from_file(from_file)
-        else:
-            raise ValueError("One of `json` or `from_file` parameters is required")
 
 
 class DB:
