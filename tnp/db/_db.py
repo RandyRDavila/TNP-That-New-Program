@@ -48,18 +48,18 @@ class _graphs:
 
     def __call__(self, **kwargs):
         if not kwargs:
-            return [_graph_from_json(graph.json) for graph in self._query.all()]
+            return [graph for graph in self._query.all()]
         else:
             filters = [(*kwarg.split("__"), kwargs[kwarg]) for kwarg in kwargs]
             expressions = [_to_filter_expression(filter, Graph) for filter in filters]
             results = self._query.filter(*expressions).all()
-            return [_graph_from_json(graph.json) for graph in results]
+            return [graph for graph in results]
 
     def all(self):
-        return [_graph_from_json(graph.json) for graph in self._query.all()]
+        return [graph for graph in self._query.all()]
 
     def complete(self):
-        return [_graph_from_json(graph.json) for graph in self._query.filter(Graph.is_complete is True)]
+        return [graph for graph in self._query.filter(Graph.is_complete is True)]
 
 
 class DB:
