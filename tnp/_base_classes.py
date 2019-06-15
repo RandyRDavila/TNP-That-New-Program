@@ -1,5 +1,11 @@
 from collections import abc
+import functools
+import json
 from typing import Callable
+
+import grinpy as gp
+
+import tnp.db.models
 
 
 class _GraphCallable:
@@ -22,8 +28,18 @@ class _GraphCallable:
     def __eq__(self, other) -> None:
         return (self.function == other.function) and (self.name == other.name)
 
-    def __call__(self, *args, **kwargs) -> None:
-        return self.function(*args, **kwargs)
+    def __hash__(self):
+        return hash(str(self))
+
+    @functools.lru_cache(maxsize=None)
+    def __call__(self, graph, *args, **kwargs) -> None:
+        if isinstance(graph, tnp.db.models.Graph):
+            if hasattr(graph, self.name):
+                return getattr(graph, self.name)
+            else:
+                graph = gp.node_link_graph(json.loads(graph.json))
+
+        return self.function(graph, *args, **kwargs)
 
     @property
     def name(self) -> None:

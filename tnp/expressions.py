@@ -1,11 +1,16 @@
 import ast
 import functools
+import json
 import math
 import operator
 import re
+import sympy
+
+import grinpy as gp
 
 from tnp.exceptions import FunctionNotAllowedError, NameNotAllowedError, OperatorNotAllowedError
 from tnp.invariants import invariants
+import tnp.db.models
 
 
 class _ASTMathEvaluator:
@@ -132,6 +137,9 @@ class _ASTMathEvaluator:
         return self.eval_(parsed_expression.body)
 
 
+SYMPY_NAMESPACE = {invariant.name: sympy.Symbol(invariant.name) for invariant in invariants}
+
+
 class Expression:
     """Class for representing mathematical expressions"""
 
@@ -139,25 +147,91 @@ class Expression:
         self._evaluator = _ASTMathEvaluator(namespace=list(invariants.names))
         self._evaluator.validate(expression)
         self._string = expression
-
-    def _calculate_matched_invariant(self, graph, matchobj):
-        invariant_name = matchobj.group(0)
-        invariant = invariants[invariant_name]
-        return str(invariant(graph))
+        self._touch_number_cache = {}
+        self._simplified = None
 
     def __repr__(self):
         return f"{self.__class__.__name__}(expression={self._string!r})"
 
-    def __str__(self):
+    def __str__(self, simplified=False):
         return self._string
 
-    def evaluate(self, graph):
+    @property
+    def simplified(self):
+        if self._simplified is None:
+            sympified = sympy.sympify(self._string, locals=SYMPY_NAMESPACE)
+            self._simplified = str(sympy.simplify(sympified))
+
+        return self._simplified
+
+    def evaluate(self, graph, db=None):
+        def _invariant_value(graph, matchobj):
+            invariant_name = matchobj.group(0)
+            invariant = invariants[invariant_name]
+
+            # Check that graph is a NetworkX graph or a TNP Graph model instance
+            if not isinstance(graph, (gp.Graph, tnp.db.models.Graph)):
+                raise TypeError("Invalid graph type; must be NetworkX graph or tnp.db.models.Graph instance")
+
+            # If the graph is a TNP Graph model instance, return the stored invariant value
+            # or calculate the value if no stored value is found
+            if isinstance(graph, tnp.db.models.Graph):
+                if hasattr(graph, invariant_name):
+                    return str(getattr(graph, invariant_name))
+                else:
+                    nxgraph = gp.node_link_graph(json.loads(graph.json))
+                    return str(invariant(nxgraph))
+
+            # If the graph is a NetworkX graph, use the node-link data to try and look up
+            # the graph in the database and return either the stored value
+            if db is not None:
+                json_query = json.dumps(gp.node_link_data(graph))
+                results = db.graphs(json_=json_query)
+                if results:
+                    db_graph = results[0]
+                    if hasattr(db_graph, invariant_name):
+                        return str(getattr(db_graph, invariant_name))
+
+            # If no database value is found, or no database is passed, return the calculated
+            # invariant value
+            return str(invariant(graph))
+
         prepared_expression = re.sub(
             pattern=rf"\b({'|'.join(f.name for f in invariants)})\b",
-            repl=functools.partial(self._calculate_matched_invariant, graph),
+            repl=functools.partial(_invariant_value, graph),
             string=self._string,
         )
         return self._evaluator.evaluate(prepared_expression)
 
     def __call__(self, graph):
         return self.evaluate(graph)
+
+    def touch_number(self, comparison_invariant, graphs):
+        cache_key = hash((comparison_invariant.name, tuple(graphs)))
+
+        touch_number = self._touch_number_cache.get(cache_key)
+        if touch_number is None:
+
+            def _calculate(invariant, graph):
+                if isinstance(graph, tnp.db.models.Graph):
+                    if hasattr(graph, invariant.name):
+                        return getattr(graph, invariant.name)
+                    else:
+                        graph = gp.node_link_graph(json.loads(graph.json))
+                        return invariant(graph)
+                else:
+                    return invariant(graph)
+
+            touch_number = sum(_calculate(comparison_invariant, graph) == self.evaluate(graph) for graph in graphs)
+            self._touch_number_cache = {cache_key: touch_number}
+
+        return touch_number
+
+    def __lt__(self, other):
+        return self.touch_number() < other.touch_number()
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
+
+    def __hash__(self):
+        return hash(self.simplified)

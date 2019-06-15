@@ -1,10 +1,10 @@
-import itertools
 import json
 import operator
 
 import grinpy as gp
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from tnp.db.models import Base, Graph
 
@@ -66,7 +66,9 @@ class DB:
     def __init__(self, db_path=None):
         # TODO: Add support for reading db_path from config file
         # Should also support path-like objects, not just strings
-        _engine = create_engine(f"sqlite:///{db_path}")
+        _engine = create_engine(
+            f"sqlite:///{db_path}", connect_args={"check_same_thread": False}, poolclass=StaticPool
+        )
         _session = sessionmaker(bind=_engine)
         Base.metadata.create_all(_engine)
 
