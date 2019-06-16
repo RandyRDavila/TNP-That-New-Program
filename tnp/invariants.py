@@ -1,10 +1,12 @@
 import grinpy as gp
 
 from tnp._base_classes import _GraphCallable, _NamespaceIterator
+from tnp.expressions import Expression
 
 
 class Invariant(_GraphCallable):
-    pass
+    def as_expression(self):
+        return Expression(self.name)
 
 
 class _invariants(_NamespaceIterator):
