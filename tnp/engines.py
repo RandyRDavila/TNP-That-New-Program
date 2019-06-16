@@ -54,7 +54,26 @@ class ConjectureEngine:
     def generate_expressions(self, starting_points: Iterable) -> Iterable[Expression]:
         return NotImplemented
 
-    def make_conjectures(self, cache_results=False):
+    def filter_by_transitivity(self, conjectures: Iterable[Conjecture]):
+        conjectures = tuple(conjectures)
+        conjecture_values = {
+            hash(conjecture): np.array([conjecture.right_hand_side.evaluate(graph) for graph in self.graphs])
+            for conjecture in conjectures
+        }
+        _op = self.type[0]
+
+        for hash1 in tuple(conjecture_values):
+            array1 = conjecture_values.get(hash1)
+            if array1 is None:
+                continue
+            for hash2 in set(conjecture_values) - {hash1}:
+                array2 = conjecture_values.get(hash2)
+                if array2 is not None and all(_op(array1, array2)):
+                    conjecture_values.pop(hash2, None)
+
+        return (conjecture for conjecture in conjectures if hash(conjecture) in conjecture_values)
+
+    def make_conjectures(self, cache_results=True, filter_by_transitivity=True):
         with multiprocessing.Pool() as pool:
             _generate = self.generate_expressions
             _expressions_by_starting_point = pool.imap(_generate, self.get_starting_points())
@@ -76,6 +95,10 @@ class ConjectureEngine:
         conjectures = (
             conjecture for conjecture in conjectures if all(conjecture.is_satisfied_by(graph) for graph in self.graphs)
         )
+
+        # Filter conjecture by transitivity if necessary
+        if filter_by_transitivity is True:
+            conjectures = self.filter_by_transitivity(conjectures)
 
         # Apply the heuristic if necessary
         if self.heuristic is not None:

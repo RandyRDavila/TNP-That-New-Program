@@ -51,6 +51,9 @@ class Conjecture(Base):
         else:
             return f"For all graphs, {_target} {_operator} {_expr}."
 
+    def __hash__(self):
+        return hash(str(self))
+
     @property
     def operator(self) -> str:
         return self.type[0]
