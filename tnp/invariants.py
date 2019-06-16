@@ -5,8 +5,7 @@ from tnp.expressions import Expression
 
 
 class Invariant(_GraphCallable):
-    def as_expression(self):
-        return Expression(self.name)
+    pass
 
 
 class _invariants(_NamespaceIterator):
