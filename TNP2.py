@@ -81,15 +81,17 @@ def main():
 
     #else:
     conjectures = get_conjectures(invariant)
-    U = Theo([x for x in conjectures['upper']])
-    L = Theo([x for x in conjectures['lower']])
+    U = Theo([x for x in conjectures['upper'] 
+                if set(x.expression).issubset(valid_invariants.items()) == False])
+    L = Theo([x for x in conjectures['lower'] 
+                if set(x.expression).issubset(valid_invariants.items()) == False])
     print('Upper Bounds')
-    for i in range(40):
+    for i in range(10):
         print(f'Conjecture {i}. {U[i]}')
         print('')
     print()
     print('Lower Bounds')
-    for i in range(40):
+    for i in range(10):
         print(f'Conjecture {i}. {L[i]}')
         print('')
     print()
@@ -103,12 +105,12 @@ def main():
         else:
             L.pop(index)
         print('Upper Bounds')
-        for i in range(40):
+        for i in range(10):
             print(f'Conjecture {i}. {U[i]}')
             print('')
         print()
         print('Lower Bounds')
-        for i in range(40):
+        for i in range(10):
             print(f'Conjecture {i}. {L[i]}')
             print('')
         print()

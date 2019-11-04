@@ -1,0 +1,17 @@
+diameter
+radius
+order
+size
+matching_number
+triameter
+randic_index
+augmented_randic_index
+harmonic_index
+atom_bond_connectivity_index
+sum_connectivity_index
+min_degree
+max_degree
+number_of_min_degree_nodes
+number_of_max_degree_nodes
+residue
+annihilation_number
