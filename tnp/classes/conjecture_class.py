@@ -70,3 +70,12 @@ class Conjecture:
             return self.get_expression() == other.get_expression()
         else:
             return False
+
+    def __ge__(self, other):
+        if self.target == other.target and self.get_expression() == other.get_expression():
+            return len(self.hyp_graphs()) >= len(other.hyp_graphs())
+        else:
+            return False
+
+        
+

@@ -8,6 +8,13 @@ from tnp.functions.make_hypothesis import *
 
 
 def make_conjectures_one(target, regular_exception = False):
+    """
+    
+    
+    
+    
+    """
+
     hyp = make_hypothesis(4, regular_exception)
     conjs = []
     for h in hyp:
