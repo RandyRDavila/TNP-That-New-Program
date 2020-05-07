@@ -48,5 +48,5 @@ $ make format
 To run the program:
 
 ```sh
-$ python TNP.py
+$ python write_on_the_wall.py
 ```
