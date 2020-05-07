@@ -18,6 +18,6 @@ def get_conjectures(target):
            The dictionary with key values equal to conjectured inequalities
            and whose values are associated with a given conjecture.
     """
-    with open(f"tnp/graph_data/{target}_conjectures", "rb") as pickle_file:
+    with open(f"TxGraffiti/conjectures/{target}_conjectures", "rb") as pickle_file:
         db = pickle.load(pickle_file)
     return db

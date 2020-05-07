@@ -8,5 +8,5 @@ del sys
 import grinpy  # noqa
 from grinpy import *  # noqa
 
-import tnp.functions.make_graph_database  # noqa
-from tnp.functions.make_graph_database import *  # noqa
+import TxGraffiti.functions.make_graph_database  # noqa
+from TxGraffiti.functions.make_graph_database import *  # noqa

@@ -1,7 +1,10 @@
 from fractions import Fraction
 
-from tnp.classes.conjecture_class import Conjecture
-from tnp.functions.get_graph_data import get_graph_data
+from TxGraffiti.classes.conjecture_class import Conjecture
+from TxGraffiti.functions.get_graph_data import get_graph_data
+
+
+
 
 
 def make_ratio(hyp, target, invariant, bound):
@@ -35,6 +38,7 @@ def make_ratio(hyp, target, invariant, bound):
     graphs = get_graph_data() # Collect graph data
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]  # Only consider graphs satisfying the specified hypothesis
     ratios = [] # Store possible ratios
+
     for G in graphs:
         ratios.append(Fraction(G[target] / G[invariant]).limit_denominator(1000))
     
@@ -82,13 +86,16 @@ def make_constant(hyp, target, invariant, bound):
     graphs = get_graph_data()
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     constants = []
+
     for G in graphs:
         constants.append(G[target] - G[invariant])
+
     if bound == "upper" and constants != []:
         if max(constants) == 0:
             return Conjecture(hyp, target, " <= ", f"{invariant}")
         else:
             return Conjecture(hyp, target, " <= ", f"{invariant} + {max(constants)}")
+
     elif bound == "lower" and constants != []:
         if min(constants) == 0:
             return Conjecture(hyp, target, " >= ", f"{invariant}")
@@ -97,26 +104,88 @@ def make_constant(hyp, target, invariant, bound):
 
 
 def make_constant_two(hyp, target, invariant1, invariant2, bound):
+    """
+    Parameters
+    ----------
+    hyp : hypothesis object
+
+    target : graph invariant to conjecture on
+
+    invariant1 : graph invariant to compare with target
+
+    invariant2 : graph invariant to compare with target
+
+    bound : 'upper' or 'lower', indicating direction of inequality
+    
+    
+    Returns
+    -------
+    conjecture instance:
+          
+
+    If bound == 'upper', then returns the following conjecture instance: 
+    'If G satisfies hyp, then target(G) <= invariant1(G)/invariant2(G) + C' 
+    where C = max{target(G) - invariant1(G)/invariant2(G): G is in the graph database}
+          
+    If bound == 'lower', then returns the following conjecture instance:
+    'If G satisfies hyp, then target(G) >= invariant1(G)/invariant2(G) + C',
+    where C = min{target(G) - invariant1(G)/invariant2(G): G is in the graph database}.
+
+    """
+
     graphs = get_graph_data()
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     constants = []
+
     for G in graphs:
         constants.append(G[target] - (G[invariant1] / G[invariant2]))
+
     if bound == "upper" and constants != []:
         if max(constants) == 0:
             return Conjecture(hyp, target, " <= ", f"{invariant1} / {invariant2}")
         else:
             return Conjecture(hyp, target, " <= ", f"( {invariant1} / {invariant2} ) + {max(constants)}")
+
     elif bound == "lower" and constants != []:
         if min(constants) == 0:
             return Conjecture(hyp, target, " >= ", f"{invariant1} / {invariant2}")
         else:
             return Conjecture(hyp, target, " >= ", f"( {invariant1} / {invariant2} ) + {min(constants)}")
+            
     else:
         return None
 
 
 def make_ratio_two(hyp, target, invariant1, invariant2, bound):
+    """
+    Parameters
+    ----------
+    hyp : hypothesis object
+
+    target : graph invariant to conjecture on
+
+    invariant1 : graph invariant to compare with target
+
+    invariant2 : graph invariant to compare with target
+
+    bound : 'upper' or 'lower', indicating direction of inequality
+    
+    
+    Returns
+    -------
+    conjecture instance:
+          
+
+    If bound == 'upper', then returns the following conjecture instance: 
+    'If G satisfies hyp, then target(G) <= C*(invariant1(G) + invariant2(G))' 
+    where C = max{target(G)/ (invariant1(G) + invariant2(G)): G is in the graph database}
+          
+    If bound == 'lower', then returns the following conjecture instance:
+    'If G satisfies hyp, then target(G) >= C*(invariant1(G) + invariant2(G))',
+    where C = min{target(G)/ (invariant1(G) + invariant2(G)): G is in the graph database}.
+
+    """
+
     graphs = get_graph_data()
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     ratios = []
@@ -161,8 +230,9 @@ def make_ratio_four(hyp, target, invariant1, invariant2, bound):
     graphs = get_graph_data()
     graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]
     ratios = []
-    for G in graphs: 
-        ratios.append(Fraction(G[target] / (G[invariant1] - G[invariant2])).limit_denominator(1000))
+    for G in graphs:
+        if G[invariant1] != G[invariant2]:
+            ratios.append(Fraction(G[target] / (G[invariant1] - G[invariant2])).limit_denominator(1000))
     if bound == "upper" and ratios != []:
         if max(ratios) == 1:
             return Conjecture(hyp, target, " <= ", f"{invariant1} - {invariant2}")
@@ -197,3 +267,32 @@ def make_ratio_five(hyp, target, invariant1, invariant2, invariant3, bound):
             return Conjecture(hyp, target, " >= ", f"{min(ratios)} * ( {invariant2} * {invariant3} / {invariant1} )")
     else:
         return None
+
+
+
+def make_constants(hyp, target, invariant):
+
+    graphs = get_graph_data() # Collect graph data
+    graphs = [graphs[G] for G in graphs if hyp(graphs[G]) is True]  # Only consider graphs satisfying the specified hypothesis
+    ratios = [] # Store possible ratios
+
+        
+    for G in graphs:
+        ratios.append(Fraction(G[target] / G[invariant]))#.limit_denominator(100))
+    
+        M = max(ratios, default = 99)
+        m = min(ratios, default = 99)
+        
+        if M == 1:
+            C1 = Conjecture(hyp, target, " <= ", f"{invariant}")
+        else:
+            C1 = Conjecture(hyp, target, " <= ", f"{M} * {invariant}")
+    
+        if m == 1:
+            C2 = Conjecture(hyp, target, " >= ", f"{invariant}")
+        else:
+            C2 = Conjecture(hyp, target, " >= ", f"{m} * {invariant}")
+    
+        return [C1, C2]
+    
+        

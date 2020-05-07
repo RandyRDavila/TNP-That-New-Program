@@ -6,44 +6,18 @@ from TxGraffiti.functions.make_hypothesis import *
 
 
 
-
-def make_conjectures_one(target, regular_exception = False):
-
-    hyp = make_hypothesis(4, regular_exception)
-    conjs = []
-    for h in hyp:
-        for i in invariant_names:
-            if i != target:
-                conjs.append(make_ratio(h, target, i, 'upper'))
-                conjs.append(make_ratio(h, target, i, 'lower'))
-                conjs.append(make_constant(h, target, i, 'upper'))
-                conjs.append(make_constant(h, target, i, 'lower'))
-
-    #C = Theo(conjs)
-    return conjs
-
-
-def make_conjectures_two(target, regular_exception = False):
-    hyp = make_hypothesis(3, regular_exception)
-    conjs = []
-    for h in hyp:
-        for c in combinations(invariant_names,2):
-            c = list(c)
-            if c[1] != c[0] and c[1] != target and c[0] != target:
-                conjs.append(make_ratio_two(h, target, c[0], c[1], 'upper'))
-                conjs.append(make_ratio_two(h, target, c[0], c[1], 'lower'))
-
-    #C = Theo(conjs)
-    return conjs
-
-def make_conjectures(target):
-    hyp = make_hypothesis(3, False)
-
-    reg_exception_invariants = ['randic_index',
+reg_exception_invariants = ['randic_index',
                                 'augmented_randic_index',
                                 'harmonic_index', 
                                 'atom_bond_connectivity_index',
                                 'sum_connectivity_index',]
+
+
+
+
+
+def make_conjectures(target):
+    hyp = make_hypothesis(3, False)
 
     if target in reg_exception_invariants:
         hyp_temp = []
@@ -54,6 +28,7 @@ def make_conjectures(target):
         hyp = hyp_temp
 
     conjs = []
+
     if target == 'zero_forcing_number':
         invariant_names.remove('total_zero_forcing_number')
         invariant_names.remove('connected_zero_forcing_number')
@@ -72,9 +47,11 @@ def make_conjectures(target):
         invariant_names.remove('connected_zero_forcing_number')
     
     invariant_names.remove(target)
+
     for h in hyp:
         new_invariant_names = invariant_names.copy()
-        if 'is_regular' in h.properties or 'is_cubic' in h.properties or 'is_strongly_regular' in h.properties or 'is_distance_regular' in h.properties:
+        if 'is_regular' in h.properties or 'is_cubic' in h.properties \
+             or 'is_strongly_regular' in h.properties or 'is_distance_regular' in h.properties:
             new_invariant_names.remove('annihilation_number')
             new_invariant_names.remove('max_degree')
             new_invariant_names.remove('number_of_min_degree_nodes')
@@ -91,6 +68,7 @@ def make_conjectures(target):
             conjs.append(make_ratio(h, target, c, 'lower'))
             conjs.append(make_constant(h, target, c, 'upper'))
             conjs.append(make_constant(h, target, c, 'lower'))
+        
         for c in combinations(new_invariant_names,2):
             c = list(c)
             conjs.append(make_ratio_two(h, target, c[0], c[1], 'upper'))
@@ -100,6 +78,3 @@ def make_conjectures(target):
         
     
     return Theo(conjs)
-
-
-

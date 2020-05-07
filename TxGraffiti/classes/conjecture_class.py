@@ -2,7 +2,7 @@ from fractions import Fraction
 
 from sympy import sympify
 
-from tnp.functions.get_graph_data import get_graph_data
+from TxGraffiti.functions.get_graph_data import get_graph_data
 
 
 class Conjecture:
@@ -73,7 +73,13 @@ class Conjecture:
 
     def __ge__(self, other):
         if self.target == other.target and self.get_expression() == other.get_expression():
-            return len(self.hyp_graphs()) >= len(other.hyp_graphs())
+            return set(self.hyp_graphs()) >= set(other.hyp_graphs())
+        else:
+            return False
+
+    def __le__(self, other):
+        if self.target == other.target and self.get_expression() == other.get_expression():
+            return set(self.hyp_graphs()) <= set(other.hyp_graphs())
         else:
             return False
 

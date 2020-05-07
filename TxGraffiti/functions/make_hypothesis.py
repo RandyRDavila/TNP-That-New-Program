@@ -1,7 +1,7 @@
 from itertools import combinations
 
-from tnp.classes.hypothesis_class import hypothesis as hyp
-from tnp.graph_data.functions.graph_property_names import property_names, non_regular_property_names
+from TxGraffiti.classes.hypothesis_class import hypothesis as hyp
+from TxGraffiti.graph_data.functions.graph_property_names import property_names, non_regular_property_names
 
 
 def make_hypothesis(index, regular_exception):

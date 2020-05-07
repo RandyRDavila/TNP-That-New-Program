@@ -1,13 +1,13 @@
 import networkx as nx
 import grinpy as GPY
-from tnp.graph_data.functions.triameter import triameter
-from tnp.graph_data.functions.domination import domination_number, total_domination_number
-from tnp.graph_data.functions.domination import independent_domination_number
-from tnp.graph_data.functions.chromatic_number import chromatic_number
-from tnp.graph_data.functions.matching_number import matching_number
-from tnp.graph_data.functions.vertex_cover_number import vertex_cover_number
-from tnp.graph_data.functions.independence_number import independence_number
-from tnp.graph_data.functions.topological_indicies import *
+from TxGraffiti.graph_data.functions.triameter import triameter
+from TxGraffiti.graph_data.functions.domination import domination_number, total_domination_number
+from TxGraffiti.graph_data.functions.domination import independent_domination_number
+from TxGraffiti.graph_data.functions.chromatic_number import chromatic_number
+from TxGraffiti.graph_data.functions.matching_number import matching_number
+from TxGraffiti.graph_data.functions.vertex_cover_number import vertex_cover_number
+from TxGraffiti.graph_data.functions.independence_number import independence_number
+from TxGraffiti.graph_data.functions.topological_indicies import *
 
 __all__ = ["calc", "graph_property_check"]
 
