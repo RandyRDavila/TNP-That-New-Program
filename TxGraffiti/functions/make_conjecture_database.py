@@ -16,7 +16,6 @@ def make_conjs(target):
         else:
             L.append(x)
     
-
     return U, L
 
 
