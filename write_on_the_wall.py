@@ -2,7 +2,7 @@ from pyfiglet import figlet_format
 from halo import Halo
 import time
 from datetime import datetime, timedelta
-import pygame
+#import pygame
 import pickle
 from TxGraffiti.functions.heuristics import Theo
 from TxGraffiti.functions.get_conjectures import *

@@ -81,7 +81,7 @@ class Conjecture:
         if self.target == other.target and self.get_expression() == other.get_expression():
             return set(self.hyp_graphs()) <= set(other.hyp_graphs())
         else:
-            return False
+            return False   
 
         
 

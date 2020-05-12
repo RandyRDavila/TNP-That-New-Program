@@ -24,4 +24,6 @@ def Theo(conjs):
 
 def Dalmation(conjs):
     conjs = set(conjs)
-    return [x for x in conjs if not any(set(x.sharp_graphs()) < set(y.sharp_graphs()) for y in conjs-{x})]
+    return [x for x in conjs 
+            if not any(set(x.sharp_graphs()) <= set(y.sharp_graphs()) 
+            for y in conjs-{x})]

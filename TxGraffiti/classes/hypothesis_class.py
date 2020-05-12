@@ -13,3 +13,5 @@ class hypothesis:
 
     def __call__(self, G):
         return False not in [G[p] for p in self.properties]
+
+    
