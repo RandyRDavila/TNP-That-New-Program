@@ -49,21 +49,28 @@ class Conjecture:
     def conjecture_sharp(self, G):
         return self.target_value(G) == self.expression_value(G)
 
-    def sharp_graphs(self):
-        graphs = get_graph_data()
-        return [G for G in graphs if self.hyp(graphs[G]) is True and self.conjecture_sharp(graphs[G]) is True]
+    def sharp_graphs(self, family = 'test_data', graphs = []):
+        if graphs == []:
+            graphs = get_graph_data(family)
+            return [G for G in graphs 
+                    if self.hyp(graphs[G]) is True 
+                    and self.conjecture_sharp(graphs[G]) is True]
+        else:
+            return [G for G in graphs 
+                    if self.hyp(graphs[G]) is True 
+                    and self.conjecture_sharp(graphs[G]) is True]
 
-    def hyp_graphs(self):
-        graphs = get_graph_data()
+    def hyp_graphs(self, family = 'test_data'):
+        graphs = get_graph_data(family)
         return [G for G in graphs if self.hyp(graphs[G]) is True]
 
     def touch(self):
         return len(self.sharp_graphs())
 
-    def scaled_touch(self):
-        graphs = get_graph_data()
+    def scaled_touch(self, family = 'test_data'):
+        graphs = get_graph_data(family)
         graphs = [G for G in graphs if self.hyp(graphs[G]) is True]
-        return Fraction(self.touch() / len(graphs)).limit_denominator(1000)
+        return Fraction(self.touch(family) / len(graphs)).limit_denominator(1000)
 
     def __eq__(self, other):
         if self.hyp == other.hyp:
@@ -77,7 +84,7 @@ class Conjecture:
         else:
             return False
 
-    def __le__(self, other):
+    def __le__(self, other, family):
         if self.target == other.target and self.get_expression() == other.get_expression():
             return set(self.hyp_graphs()) <= set(other.hyp_graphs())
         else:

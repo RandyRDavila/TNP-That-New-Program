@@ -1,80 +1,116 @@
 from TxGraffiti.functions.make_expressions import *
+from TxGraffiti.functions.heuristics import Theo, Dalmation, Romy
+from TxGraffiti.functions.get_graph_data import get_hypothesis_data
+from TxGraffiti.functions.filters import desired_invariant_names
+from TxGraffiti.functions.filters import regular_exclusion_invariant_names
+from TxGraffiti.functions.get_graph_data import get_graph_data
+from TxGraffiti.functions.decorators import timer
 from itertools import combinations
-from TxGraffiti.graph_data.functions.graph_property_names import *
-from TxGraffiti.functions.heuristics import Theo, Dalmation
-from TxGraffiti.functions.make_hypothesis import *
 
 
 
-reg_exception_invariants = ['randic_index',
-                                'augmented_randic_index',
-                                'harmonic_index', 
-                                'atom_bond_connectivity_index',
-                                'sum_connectivity_index',]
+__all__ = ['make_conjs']
 
 
-
-
-
-def make_conjectures(target):
-    hyp = make_hypothesis(3, False)
-
-    if target in reg_exception_invariants:
-        hyp_temp = []
-        for h in hyp:
-            if 'is_regular' not in h.properties and 'is_cubic' not in h.properties \
-                and 'is_strongly_regular' not in h.properties and 'is_distance_regular' not in h.properties:
-                hyp_temp.append(h)
-        hyp = hyp_temp
-
+@timer
+def make_conjs(target, 
+                two_hypothesis = False, 
+                two_invariants = False, 
+                data_set = 'test_data',
+                use_Dalmation = False,
+                use_Romy = False):
+    
     conjs = []
+    hypothesis = get_hypothesis_data()[1]
+    invariant_names = desired_invariant_names(target)
+   
+    graphs_hold = get_graph_data(data_set)
 
-    if target == 'zero_forcing_number':
-        invariant_names.remove('total_zero_forcing_number')
-        invariant_names.remove('connected_zero_forcing_number')
-        invariant_names.remove('power_domination_number')
-    elif target == 'total_zero_forcing_number':
-        invariant_names.remove('zero_forcing_number')
-        invariant_names.remove('connected_zero_forcing_number')
-        invariant_names.remove('power_domination_number')
-    elif target == 'connected_zero_forcing_number':
-        invariant_names.remove('zero_forcing_number')
-        invariant_names.remove('total_zero_forcing_number')
-        invariant_names.remove('power_domination_number')
-    elif target == 'power_domination_number':
-        invariant_names.remove('zero_forcing_number')
-        invariant_names.remove('total_zero_forcing_number')
-        invariant_names.remove('connected_zero_forcing_number')
-    
-    invariant_names.remove(target)
+    for h in hypothesis:
+        graphs = graphs_hold.copy()
+        graphs = [graphs[G] for G in graphs if h(graphs[G]) is True]
+        new_invariant_names = regular_exclusion_invariant_names(h, invariant_names)
+        for invar in new_invariant_names:
+            
+            temp_conjs = list(filter(None, make_ratio(graphs, h, target, invar)))
+            for c in temp_conjs:
+                conjs.append(c)
+            
+            temp_conjs = list(filter(None, make_constant(graphs,h, target, invar)))
+            for c in temp_conjs:
+                conjs.append(c)
 
-    for h in hyp:
-        new_invariant_names = invariant_names.copy()
-        if 'is_regular' in h.properties or 'is_cubic' in h.properties \
-             or 'is_strongly_regular' in h.properties or 'is_distance_regular' in h.properties:
-            new_invariant_names.remove('annihilation_number')
-            new_invariant_names.remove('max_degree')
-            new_invariant_names.remove('number_of_min_degree_nodes')
-            new_invariant_names.remove('number_of_max_degree_nodes')
-            new_invariant_names.remove('size')
-            new_invariant_names.remove('randic_index')
-            new_invariant_names.remove('augmented_randic_index')
-            new_invariant_names.remove('harmonic_index')
-            new_invariant_names.remove('atom_bond_connectivity_index')
-            new_invariant_names.remove('sum_connectivity_index')
+        if two_invariants == True:
+            for invars in combinations(new_invariant_names,2):
+                invars = list(invars)
 
-        for c in new_invariant_names:
-            conjs.append(make_ratio(h, target, c, 'upper'))
-            conjs.append(make_ratio(h, target, c, 'lower'))
-            conjs.append(make_constant(h, target, c, 'upper'))
-            conjs.append(make_constant(h, target, c, 'lower'))
-        
-        for c in combinations(new_invariant_names,2):
-            c = list(c)
-            conjs.append(make_ratio_two(h, target, c[0], c[1], 'upper'))
-            conjs.append(make_ratio_two(h, target, c[0], c[1], 'lower'))
-            conjs.append(make_ratio_three(h, target, c[0], c[1], 'upper'))
-            conjs.append(make_ratio_three(h, target, c[0], c[1], 'lower'))
-        
-    
-    return Theo(conjs)
+                temp_conjs = list(filter(None, make_constant_two(graphs, h, target, invars[0], invars[1])))
+                for c in temp_conjs:
+                    conjs.append(c)
+
+                temp_conjs = list(filter(None, make_constant_two(graphs, h, target, invars[1], invars[0])))
+                for c in temp_conjs:
+                    conjs.append(c)
+
+                temp_conjs = list(filter(None, make_ratio_two(graphs, h, target, invars[0], invars[1])))
+                for c in temp_conjs:
+                    conjs.append(c)
+
+                temp_conjs = list(filter(None, make_ratio_three(graphs, h, target, invars[0], invars[1])))
+                for c in temp_conjs:
+                    conjs.append(c)
+                
+                temp_conjs = list(filter(None, make_ratio_three(graphs, h, target, invars[1], invars[0])))
+                for c in temp_conjs:
+                    conjs.append(c)
+
+    if two_hypothesis == True:
+        hypothesis = get_hypothesis_data()[2]
+
+        for h in hypothesis:
+            graphs = graphs_hold.copy()
+            graphs = [graphs[G] for G in graphs if h(graphs[G]) is True]
+            new_invariant_names = regular_exclusion_invariant_names(h, invariant_names)
+            for invar in new_invariant_names:
+            
+                temp_conjs = list(filter(None, make_ratio(graphs, h, target, invar)))
+                for c in temp_conjs:
+                    conjs.append(c)
+            
+                temp_conjs = list(filter(None, make_constant(graphs, h, target, invar)))
+                for c in temp_conjs:
+                    conjs.append(c)
+
+            if two_invariants == True:
+                for invars in combinations(new_invariant_names,2):
+                    invars = list(invars)
+
+                    temp_conjs = list(filter(None, make_constant_two(graphs, h, target, invars[0], invars[1])))
+                    for c in temp_conjs:
+                        conjs.append(c)
+
+                    temp_conjs = list(filter(None, make_constant_two(graphs, h, target, invars[1], invars[0])))
+                    for c in temp_conjs:
+                        conjs.append(c)
+
+                    temp_conjs = list(filter(None, make_ratio_two(graphs, h, target, invars[0], invars[1])))
+                    for c in temp_conjs:
+                        conjs.append(c)
+
+                    temp_conjs = list(filter(None, make_ratio_three(graphs, h, target, invars[0], invars[1])))
+                    for c in temp_conjs:
+                        conjs.append(c)
+                
+                    temp_conjs = list(filter(None, make_ratio_three(graphs, h, target, invars[1], invars[0])))
+                    for c in temp_conjs:
+                        conjs.append(c)
+
+    if use_Dalmation == True:
+        return Dalmation(Theo(conjs))
+    elif use_Romy == True:
+        return Romy(Theo(conjs))
+    else:
+        return Theo(conjs)
+
+
+

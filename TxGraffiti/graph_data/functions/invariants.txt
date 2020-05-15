@@ -4,8 +4,6 @@ connected_domination_number
 independence_number
 power_domination_number
 zero_forcing_number
-total_zero_forcing_number
-connected_zero_forcing_number
 diameter
 radius
 order
@@ -16,9 +14,7 @@ matching_number
 min_maximal_matching_number
 triameter
 randic_index
-augmented_randic_index
 harmonic_index
-atom_bond_connectivity_index
 sum_connectivity_index
 min_degree
 max_degree
@@ -27,3 +23,4 @@ number_of_max_degree_nodes
 clique_number
 residue
 annihilation_number
+vertex_cover_number

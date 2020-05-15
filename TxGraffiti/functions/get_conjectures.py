@@ -10,8 +10,6 @@ def get_conjectures(target):
     target :   string
                A graph invariant computable by grinpy.
 
-    family :   string
-               A name of a given graph family stored in TxGraffiti.
     Returns
     -------
     db :   dictionary

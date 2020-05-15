@@ -42,9 +42,7 @@ def make_graph6_db(order, family = 'graph'):
     pickle_dict = dict()
     i = 0
     for graph in graphs:
-
         pickle_dict[f'{family}-{order}-graph{i}'] = dict()
-
 
         for name in invariant_names:
             pickle_dict[f'{family}-{order}-graph{i}'][name] = calc(graph, name)
