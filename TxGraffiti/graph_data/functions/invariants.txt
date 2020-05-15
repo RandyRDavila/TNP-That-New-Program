@@ -23,4 +23,3 @@ number_of_max_degree_nodes
 clique_number
 residue
 annihilation_number
-vertex_cover_number

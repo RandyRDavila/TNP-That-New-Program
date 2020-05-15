@@ -287,7 +287,7 @@ def make_ratio_three(graphs, hyp, target, invariant1, invariant2):
     if ratios == []:
         upper = None
         lower = None
-        return lower, upper
+        return [lower, upper]
 
     else:
         m = min(ratios)
@@ -305,7 +305,7 @@ def make_ratio_three(graphs, hyp, target, invariant1, invariant2):
         elif M > -4 and M < 4:
             upper = Conjecture(hyp, target, " <= ", f"{M} * ( {invariant2} / {invariant1} )")
         else:
-            lower = None
+            upper = None
 
         return [lower, upper]
 
