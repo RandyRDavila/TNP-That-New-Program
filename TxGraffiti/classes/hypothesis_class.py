@@ -1,4 +1,20 @@
 class hypothesis:
+    """
+    A class to represent the hypothesis in a graph theoretic conjecture. 
+
+    ...
+
+    Attributes
+    ----------
+    *args : list
+        A list of strings that name graph theoretic properties.
+
+
+    Methods
+    -------
+
+    """
+
     def __init__(self, *args):
         self.properties = args
 

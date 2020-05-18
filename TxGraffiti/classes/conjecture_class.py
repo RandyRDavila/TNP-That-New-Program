@@ -1,11 +1,63 @@
 from fractions import Fraction
-
 from sympy import sympify
-
 from TxGraffiti.functions.get_graph_data import get_graph_data
 
 
 class Conjecture:
+    """
+    A class to represent a conjecture. Here conjectures are conditional statements of the form
+
+        If G satisfies hyp, then target inequality expression. 
+
+    ...
+
+    Attributes
+    ----------
+    hyp : hypothesis class
+        A hypothesis for a given conditional statement.
+
+    target : str
+        A graph invariant for for which a conjecture is made on.
+
+    inequality : str
+        Either 'upper' or 'lower' to decide the direction of the inequality against target.
+
+    expression : str
+        A combination of graph invariants and operations on said graph invariants. 
+
+
+    Methods
+    -------
+    get_expression():
+        Returns the string representation of the conjectures expression.
+
+    get_string():
+        Returns the string representation of the entire conjectures.
+
+    target_value(G):
+        Returns the numeric value of the target invariant on a specific graph G.
+
+    expression_value(G):
+        Returns the numeric value of the expression evaluated on a specific graph G.
+
+    conjecture_instance(G):
+        Returns a boolean value for the conjecture instance on a specified graph G.
+
+    conjecture_sharp(G):
+        Returns a boolean value for the conjecture holding with equality on a specified graph G.
+
+    sharp_graphs(family = 'test_data', graphs = []):
+        Returns the set of all sharp graphs. 
+
+    hyp_graphs(family = 'test_data', graphs = []):
+        Returns the set of all graphs satisfying the hypothesis. 
+
+    touch():
+        Returns the number of times the conjecture holds with equality. 
+    """
+
+
+
     def __init__(self, hyp, target, inequality, expression):
         self.hyp = hyp
         self.target = target
@@ -49,6 +101,9 @@ class Conjecture:
     def conjecture_sharp(self, G):
         return self.target_value(G) == self.expression_value(G)
 
+    def __call__(self, G):
+        return eval(str(self.target_value(G)) + self.inequality() + str(self.expression_value(G)))
+
     def sharp_graphs(self, family = 'test_data', graphs = []):
         if graphs == []:
             graphs = get_graph_data(family)
@@ -70,7 +125,7 @@ class Conjecture:
     def scaled_touch(self, family = 'test_data'):
         graphs = get_graph_data(family)
         graphs = [G for G in graphs if self.hyp(graphs[G]) is True]
-        return Fraction(self.touch(family) / len(graphs)).limit_denominator(1000)
+        return Fraction(self.touch() / len(graphs)).limit_denominator(1000)
 
     def __eq__(self, other):
         if self.hyp == other.hyp:
@@ -84,7 +139,7 @@ class Conjecture:
         else:
             return False
 
-    def __le__(self, other, family):
+    def __le__(self, other):
         if self.target == other.target and self.get_expression() == other.get_expression():
             return set(self.hyp_graphs()) <= set(other.hyp_graphs())
         else:

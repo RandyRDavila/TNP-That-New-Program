@@ -1,4 +1,5 @@
 from TxGraffiti.functions.get_graph_data import get_graph_data
+from TxGraffiti.functions.get_graph_data import get_hypothesis_data
 from TxGraffiti.functions.decorators import timer 
 
 
@@ -33,6 +34,7 @@ def Dalmation(conjs, data_set = 'test_data'):
     C = []
     C.append(conjs[0])
     graph_data = get_graph_data(data_set)
+
     observed_graphs = set(conjs[0].sharp_graphs(graphs = graph_data))
 
     for i in range(1, len(conjs)):
