@@ -78,12 +78,12 @@ def main():
         print()
 
         print('Upper Bounds')
-        for i in range(10):
+        for i in range(15):
             print(f'Conjecture {i}. {U[i]}')
             print('')
         print()
         print('Lower Bounds')
-        for i in range(10):
+        for i in range(15):
             print(f'Conjecture {i}. {L[i]}')
             print('')
         print()
@@ -97,12 +97,12 @@ def main():
             else:
                 L.pop(index)
             print('Upper Bounds')
-            for i in range(10):
+            for i in range(15):
                 print(f'Conjecture {i}. {U[i]}')
                 print('')
             print()
             print('Lower Bounds')
-            for i in range(10):
+            for i in range(15):
                 print(f'Conjecture {i}. {L[i]}')
                 print('')
             print()
@@ -114,12 +114,12 @@ def main():
         U = conjectures['upper']
         L = conjectures['lower']
         print('Upper Bounds')
-        for i in range(10):
+        for i in range(15):
             print(f'Conjecture {i}. {U[i]}')
             print('')
         print()
         print('Lower Bounds')
-        for i in range(10):
+        for i in range(15):
             print(f'Conjecture {i}. {L[i]}')
             print('')
         print()
@@ -133,12 +133,12 @@ def main():
             else:
                 L.pop(index)
             print('Upper Bounds')
-            for i in range(10):
+            for i in range(15):
                 print(f'Conjecture {i}. {U[i]}')
                 print('')
                 print()
             print('Lower Bounds')
-            for i in range(10):
+            for i in range(15):
                 print(f'Conjecture {i}. {L[i]}')
                 print('')
                 print()

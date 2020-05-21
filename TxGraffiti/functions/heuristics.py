@@ -8,6 +8,7 @@ __all__ = ['Theo', 'Dalmation', 'Romy']
 
 def Theo(conjs):
     
+    conjs = [x for x in conjs if x.touch() > 5]
     C = []
     conjs = list(filter(None, conjs))
     expressions = set([c.get_expression() for c in conjs])
