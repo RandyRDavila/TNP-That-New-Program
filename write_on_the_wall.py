@@ -19,10 +19,10 @@ valid_invariants = {1: 'domination_number',
                     7: 'power_domination_number',
                     8: 'matching_number', 
                     9: 'min_maximal_matching_number',
-                    9: 'chromatic_number',
-                    10: 'clique_number',
-                    11: 'triameter', 
-                    12: 'atom_bond_connectivity_index'}
+                    10: 'chromatic_number',
+                    12: 'clique_number',
+                    12: 'triameter', 
+                    13: 'atom_bond_connectivity_index'}
 
 graph_properties = {1 : 'is_connected',
                     2 : 'is_regular',
